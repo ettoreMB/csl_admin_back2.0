@@ -1,0 +1,1127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model idx_ano_mes_ativo {
+  ANO_MES Decimal  @id(map: "PK_idx_ano_mes_ativo") @db.Decimal(18, 0)
+  ANO     Decimal  @db.Decimal(18, 0)
+  MES     Decimal  @db.Decimal(18, 0)
+  DIA     Decimal? @db.Decimal(18, 0)
+  DOLAR   Decimal? @default(0, map: "DF_idx_ano_mes_ativo_DOLAR") @db.Decimal(18, 4)
+
+  @@index([ANO], map: "IX_idx_ano_mes_ativo_ANO")
+  @@index([ANO_MES], map: "IX_idx_ano_mes_ativo_ANO_MES")
+  @@index([DOLAR], map: "IX_idx_ano_mes_ativo_DOLAR")
+  @@index([MES], map: "IX_idx_ano_mes_ativo_MES")
+}
+
+model idx_cnpj_ativo {
+  CNPJ           Decimal @id(map: "PK_idx_cnpj_ativo") @db.Decimal(18, 0)
+  CNPJ_FORMATADO String  @db.VarChar(50)
+  CNPJ_RAIZ      String? @db.VarChar(50)
+  CNPJ_VALIDO    Boolean
+
+  @@index([CNPJ_FORMATADO], map: "IX_idx_cnpj_ativo_CNPJ_FORMATADO")
+  @@index([CNPJ_RAIZ], map: "IX_idx_cnpj_ativo_CNPJ_RAIZ")
+  @@index([CNPJ_VALIDO], map: "IX_idx_cnpj_ativo_CNPJ_VALIDO")
+}
+
+model idx_cnpj_ativo_demanda {
+  CNPJ_ESTABELECIMENTO        Decimal @id(map: "PK_idx_cnpj_ativo_demanda") @db.Decimal(18, 0)
+  CNPJ_FORMATADO              String  @db.VarChar(50)
+  CNPJ_RAIZ                   String? @db.VarChar(50)
+  CNPJ_VALIDO                 Boolean
+  EMAIL_REPRESENTANTE_DEMANDA String  @default("orfao@orfao", map: "DF_idx_cnpj_demanda_ativo_EMAIL_REPRESENTANTE_DEMANDA") @db.VarChar(100)
+  SETORIZACAO_DEMANDA         String  @db.VarChar(100)
+  EMAIL_REPRESENTANTE_VENDA   String  @default("orfao@orfao", map: "DF_idx_cnpj_demanda_ativo_EMAIL_REPRESENTANTE_VENDA") @db.VarChar(100)
+  SETORIZACAO_VENDA           String  @db.VarChar(100)
+  EMAIL_REPRESENTANTE_ACESSO  String  @default("orfao@orfao", map: "DF_idx_cnpj_demanda_ativo_EMAIL_REPRESENTANTE_ACESSO") @db.VarChar(100)
+  SETORIZACAO_ACESSO          String  @db.VarChar(100)
+
+  @@index([CNPJ_FORMATADO], map: "IX_idx_cnpj_ativo_demanda_CNPJ_FORMATADO")
+  @@index([CNPJ_RAIZ], map: "IX_idx_cnpj_ativo_demanda_CNPJ_RAIZ")
+  @@index([CNPJ_VALIDO], map: "IX_idx_cnpj_ativo_demanda_CNPJ_VALIDO")
+  @@index([EMAIL_REPRESENTANTE_ACESSO], map: "IX_idx_cnpj_ativo_demanda_EMAIL_REPRESENTANTE_ACESSO")
+  @@index([EMAIL_REPRESENTANTE_DEMANDA], map: "IX_idx_cnpj_ativo_demanda_EMAIL_REPRESENTANTE_DEMANDA")
+  @@index([EMAIL_REPRESENTANTE_VENDA], map: "IX_idx_cnpj_ativo_demanda_EMAIL_REPRESENTANTE_VENDA")
+  @@index([SETORIZACAO_DEMANDA], map: "IX_idx_cnpj_ativo_demanda_SETORIZACAO_DEMANDA")
+  @@index([SETORIZACAO_ACESSO], map: "IX_idx_cnpj_ativo_demandao_SETORIZACAO_ACESSO")
+  @@index([SETORIZACAO_VENDA], map: "IX_idx_cnpj_ativo_demandao_SETORIZACAO_VENDA")
+}
+
+model idx_cnpj_ativo_distribuidor {
+  CNPJ_DISTRIBUIDOR     Decimal @id(map: "PK_idx_cnpj_distribuidor_ativo") @db.Decimal(18, 0)
+  ID_GRUPO_DISTRIBUIDOR Decimal @db.Decimal(18, 0)
+
+  @@index([CNPJ_DISTRIBUIDOR], map: "IX_idx_cnpj_distribuidor_ativo")
+  @@index([ID_GRUPO_DISTRIBUIDOR], map: "IX_idx_cnpj_distribuidor_ativo_ID_GRUPO_DISTRIBUIDOR")
+}
+
+model idx_cnpj_ativo_setorizado {
+  CNPJ                        Decimal @id(map: "PK_idx_cnpj_ativo_setorizado") @db.Decimal(18, 0)
+  CNPJ_FORMATADO              String  @db.VarChar(50)
+  CNPJ_RAIZ                   String? @db.VarChar(50)
+  CNPJ_VALIDO                 Boolean
+  EMAIL_REPRESENTANTE_DEMANDA String  @default("orfao@orfao", map: "DF_idx_cnpj_ativo_setorizado_EMAIL_REPRESENTANTE_DEMANDA") @db.VarChar(100)
+  SETORIZACAO_DEMANDA         String  @db.VarChar(100)
+  EMAIL_REPRESENTANTE_VENDA   String  @default("orfao@orfao", map: "DF_idx_cnpj_ativo_setorizado_EMAIL_REPRESENTANTE_VENDA") @db.VarChar(100)
+  SETORIZACAO_VENDA           String  @db.VarChar(100)
+  EMAIL_REPRESENTANTE_ACESSO  String  @default("orfao@orfao", map: "DF_idx_cnpj_ativo_setorizado_EMAIL_REPRESENTANTE_ACESSO") @db.VarChar(100)
+  SETORIZACAO_ACESSO          String  @db.VarChar(100)
+
+  @@index([CNPJ_FORMATADO], map: "IX_idx_cnpj_ativo_setorizado_CNPJ_FORMATADO")
+  @@index([CNPJ_RAIZ], map: "IX_idx_cnpj_ativo_setorizado_CNPJ_RAIZ")
+  @@index([CNPJ_VALIDO], map: "IX_idx_cnpj_ativo_setorizado_CNPJ_VALIDO")
+  @@index([EMAIL_REPRESENTANTE_ACESSO], map: "IX_idx_cnpj_ativo_setorizado_EMAIL_REPRESENTANTE_ACESSO")
+  @@index([EMAIL_REPRESENTANTE_DEMANDA], map: "IX_idx_cnpj_ativo_setorizado_EMAIL_REPRESENTANTE_DEMANDA")
+  @@index([EMAIL_REPRESENTANTE_VENDA], map: "IX_idx_cnpj_ativo_setorizado_EMAIL_REPRESENTANTE_VENDA")
+  @@index([SETORIZACAO_ACESSO], map: "IX_idx_cnpj_ativo_setorizado_SETORIZACAO_ACESSO")
+  @@index([SETORIZACAO_DEMANDA], map: "IX_idx_cnpj_ativo_setorizado_SETORIZACAO_DEMANDA")
+  @@index([SETORIZACAO_VENDA], map: "IX_idx_cnpj_ativo_setorizado_SETORIZACAO_VENDA")
+}
+
+model idx_cod_municipio_ativo {
+  COD_MUNICIPIO String @id(map: "PK_idx_cod_municipio_ativo") @db.VarChar(7)
+
+  @@index([COD_MUNICIPIO], map: "IX_idx_cod_municipio_ativo")
+}
+
+model idx_cod_produto_ativo {
+  COD_PRODUTO       String  @id(map: "PK_idx_cod_produtos") @db.VarChar(50)
+  COD_PRODUTO_LINHA Decimal @db.Decimal(18, 0)
+
+  @@index([COD_PRODUTO_LINHA], map: "IX_idx_cod_produto_ativo_COD_PRODUTO_LINHA")
+  @@index([COD_PRODUTO], map: "IX_idx_cod_produtos")
+}
+
+model idx_cod_produto_linha_ativo {
+  COD_PRODUTO_LINHA Decimal @id(map: "PK_idx_cod_produto_linha") @db.Decimal(18, 0)
+
+  @@index([COD_PRODUTO_LINHA], map: "IX_idx_cod_produto_linha")
+}
+
+model idx_email_representante_ativo {
+  EMAIL_REPRESENTANTE String @id(map: "PK_idx_email_representante_ativo") @db.VarChar(100)
+
+  @@index([EMAIL_REPRESENTANTE], map: "IX_idx_email_representante_ativo")
+}
+
+model idx_id_grupo_distribuidor_ativo {
+  ID_GRUPO_DISTRIBUIDOR Decimal @id(map: "PK_idx_id_grupo_distribuidor_ativo") @db.Decimal(18, 0)
+
+  @@index([ID_GRUPO_DISTRIBUIDOR], map: "IX_idx_id_grupo_distribuidor_ativo")
+}
+
+model idx_setorizacao {
+  CNPJ                        Decimal @id(map: "PK_idx_setorizacao") @db.Decimal(18, 0)
+  EMAIL_REPRESENTANTE_DEMANDA String  @default("orfao@orfao", map: "DF_idx_setorizacao_ativa_EMAIL_REPRESENTANTE_DEMANDA") @db.VarChar(100)
+  SETORIZACAO_DEMANDA         String  @db.VarChar(100)
+  EMAIL_REPRESENTANTE_VENDA   String  @default("orfao@orfao", map: "DF_idx_setorizacao_ativa_EMAIL_REPRESENTANTE_VENDA") @db.VarChar(100)
+  SETORIZACAO_VENDA           String  @db.VarChar(100)
+  EMAIL_REPRESENTANTE_ACESSO  String  @default("orfao@orfao", map: "DF_Table_1_EMAIL_REPRESENTANTE_VENDA1") @db.VarChar(100)
+  SETORIZACAO_ACESSO          String  @db.VarChar(100)
+
+  @@index([EMAIL_REPRESENTANTE_ACESSO], map: "IX_idx_setorizacao_EMAIL_REPRESENTANTE_ACESSO")
+  @@index([EMAIL_REPRESENTANTE_DEMANDA], map: "IX_idx_setorizacao_EMAIL_REPRESENTANTE_DEMANDA")
+  @@index([EMAIL_REPRESENTANTE_VENDA], map: "IX_idx_setorizacao_EMAIL_REPRESENTANTE_VE")
+  @@index([SETORIZACAO_ACESSO], map: "IX_idx_setorizacao_SETORIZACAO_ACESSO")
+  @@index([SETORIZACAO_DEMANDA], map: "IX_idx_setorizacao_SETORIZACAO_DEMANDA")
+  @@index([SETORIZACAO_VENDA], map: "IX_idx_setorizacao_SETORIZACAO_VENDA")
+}
+
+model pbi_d_atualizacao {
+  Atualizacao DateTime @id(map: "PK_pbi_d_atualizacao") @db.DateTime
+}
+
+model pbi_d_datas_anos {
+  pk_idx_Ano_ Decimal @id(map: "PK_pbi_d_datas_anos") @map("(pk_idx_Ano)") @db.Decimal(18, 0)
+  Ano         String  @unique(map: "IX_pbi_d_datas_anos") @db.VarChar(10)
+  idx_Periodo Decimal @map("#idx_Periodo") @db.Decimal(18, 0)
+  Periodo     String  @db.VarChar(20)
+}
+
+model pbi_d_datas_meses {
+  pk_Ano_Mes_Universal_ Decimal  @id(map: "PK_pbi_d_datas_meses") @map("(pk_Ano_Mes_Universal)") @db.Decimal(18, 0)
+  idx_Ano               Decimal  @map("#idx_Ano") @db.Decimal(18, 0)
+  Ano                   String   @db.VarChar(10)
+  idx_Mes               Decimal  @map("#idx_Mes") @db.Decimal(18, 0)
+  Mes                   String   @db.VarChar(10)
+  idx_Trimestre         Decimal  @map("#idx_Trimestre") @db.Decimal(18, 0)
+  Trimestre             String   @db.VarChar(10)
+  idx_Semestre          Decimal  @map("#idx_Semestre") @db.Decimal(18, 0)
+  Semestre              String   @db.VarChar(10)
+  idx_Periodo           Decimal  @map("#idx_Periodo") @db.Decimal(18, 0)
+  Periodo               String   @db.VarChar(20)
+  Mes_Atual             Boolean  @map("@Mes-Atual")
+  idx_MesYTD            Decimal? @map("#idx_MesYTD") @db.Decimal(18, 0)
+  YTD                   Boolean  @map("@YTD")
+  YTD_Atual             Boolean  @map("@YTD_Atual")
+  YTD_Passado           Boolean  @map("@YTD_Passado")
+  YTD_Retrasado         Boolean  @map("@YTD_Retrasado")
+  idx_Mes36             Decimal  @map("#idx_Mes36") @db.Decimal(18, 0)
+  Mes_36                String?  @map("Mes 36") @db.VarChar(30)
+  MAT_36                Boolean  @map("@MAT_36")
+  MAT_24                Boolean  @map("@MAT_24")
+  MAT_12                Boolean  @map("@MAT_12")
+  MAT_06                Boolean  @map("@MAT_06")
+  MAT_03                Boolean  @map("@MAT_03")
+  MAT_Atual             Boolean  @map("@MAT_Atual")
+  MAT_Passado           Boolean  @map("@MAT_Passado")
+  MAT_Retrasado         Boolean  @map("@MAT_Retrasado")
+}
+
+model pbi_d_distribuidor_grupo {
+  pk_Id_Grupo_Distribuidor_ Decimal @id(map: "PK_pbi_d_distribuidor_grupo") @map("(pk_Id_Grupo_Distribuidor)") @db.Decimal(18, 0)
+  Grupo                     String  @db.VarChar(100)
+  Tipo                      String  @db.VarChar(100)
+  fk_Email_Representante    String  @map("#fk_Email_Representante") @db.VarChar(100)
+}
+
+model pbi_d_estabelecimento {
+  pk_CNPJ_Estabelecimento_       Decimal @id(map: "PK_pbi_d_estabelecimentos") @map("(pk_CNPJ_Estabelecimento)") @db.Decimal(18, 0)
+  CNPJ_Raiz                      String? @map("CNPJ Raiz") @db.VarChar(50)
+  CNPJ                           String  @db.VarChar(50)
+  CNES                           String  @db.VarChar(7)
+  Tipo                           String  @db.VarChar(12)
+  Estabelecimento                String? @db.VarChar(556)
+  Nome_Fantasia                  String? @map("Nome Fantasia") @db.VarChar(300)
+  Razao_Social                   String? @map("Razao Social") @db.VarChar(300)
+  Grupo                          String  @db.VarChar(100)
+  Logradouro                     String? @db.VarChar(500)
+  Numero                         String? @db.VarChar(50)
+  Complemento                    String? @db.VarChar(300)
+  Bairro                         String? @db.VarChar(300)
+  CEP                            String? @db.VarChar(8)
+  fk_Cod_Municipio               String  @map("#fk_Cod_Municipio") @db.VarChar(7)
+  Cidade                         String? @db.VarChar(200)
+  UF                             String  @db.VarChar(2)
+  Capital                        Boolean @map("@Capital")
+  Micro_Regiao                   String  @map("Micro Regiao") @db.VarChar(100)
+  Meso_Regiao                    String  @map("Meso Regiao") @db.VarChar(100)
+  Regiao                         String  @db.VarChar(100)
+  Pais                           String  @db.VarChar(100)
+  Natureza                       String  @db.NVarChar(200)
+  Esfera                         String  @db.VarChar(50)
+  Gestao                         String  @db.VarChar(50)
+  Tipo_Pessoa                    String  @map("Tipo Pessoa") @db.VarChar(50)
+  Target_Demanda                 Boolean @map("@Target Demanda")
+  Setorizac_o_Demanda            String  @map("Setorizacão Demanda") @db.VarChar(100)
+  fk_Email_Representante_Demanda String  @map("#fk_Email_Representante_Demanda") @db.VarChar(100)
+  Representante_Demanda          String  @map("Representante Demanda") @db.VarChar(50)
+  Gerente_Demanda                String  @map("Gerente Demanda") @db.VarChar(50)
+  Diretor_Demanda                String  @map("Diretor Demanda") @db.VarChar(50)
+  Target_Venda                   Boolean @map("@Target Venda")
+  Setorizac_o_Venda              String  @map("Setorizacão Venda") @db.VarChar(100)
+  fk_Email_Representante_Venda   String  @map("#fk_Email_Representante_Venda") @db.VarChar(100)
+  Representante_Venda            String  @map("Representante Venda") @db.VarChar(50)
+  Gerente_Venda                  String  @map("Gerente Venda") @db.VarChar(50)
+  Diretor_Venda                  String  @map("Diretor Venda") @db.VarChar(50)
+  Setorizac_o_Acesso             String  @map("Setorizacão Acesso") @db.VarChar(100)
+  fk_Email_Representante_Acesso  String  @map("#fk_Email_Representante_Acesso") @db.VarChar(100)
+  Representante_Acesso           String  @map("Representante Acesso") @db.VarChar(50)
+  Gerente_Acesso                 String  @map("Gerente Acesso") @db.VarChar(50)
+  Diretor_Acesso                 String  @map("Diretor Acesso") @db.VarChar(50)
+}
+
+model pbi_d_fv_representante {
+  pk_Email_Representante_ String  @id(map: "PK_pbi_d_fv_representante") @map("(pk_Email_Representante)") @db.VarChar(100)
+  Representante           String  @db.VarChar(50)
+  Gerente                 String  @db.VarChar(50)
+  Diretor                 String  @db.VarChar(50)
+  Ativo                   Boolean @map("@Ativo")
+}
+
+model pbi_d_movimento_tipo {
+  pk_Cod_Tipo_Movimento_ String  @id(map: "PK_pbi_d_movimento_tipo") @map("(pk_Cod_Tipo_Movimento)") @db.VarChar(8)
+  Tipo                   String? @db.VarChar(200)
+  Cod_Grupo              String? @db.VarChar(2)
+  Grupo                  String? @db.VarChar(50)
+  Cod_Forma              String? @db.VarChar(2)
+  Forma                  String? @db.VarChar(50)
+  Cod_Valor              String? @db.VarChar(2)
+  Valor                  String? @db.VarChar(50)
+  Cod_Agrupamento        String? @db.VarChar(2)
+  Agrupamento            String? @db.VarChar(50)
+}
+
+model pbi_d_produto {
+  pk_Cod_Produto_         String  @id(map: "PK_pbi_produtos") @map("(pk_Cod_Produto)") @db.VarChar(50)
+  Produto                 String  @db.VarChar(100)
+  fk_Cod_Linha            Decimal @map("#fk_Cod_Linha") @db.Decimal(18, 0)
+  Linha                   String  @db.VarChar(100)
+  idx_Grupo               Decimal @map("#idx_Grupo") @db.Decimal(18, 0)
+  Grupo                   String  @db.VarChar(100)
+  idx_Grupo_Venda         Decimal @map("#idx_Grupo_Venda") @db.Decimal(18, 0)
+  Grupo_Venda             String  @map("Grupo Venda") @db.VarChar(100)
+  Unidade_Venda           String  @map("Unidade Venda") @db.VarChar(100)
+  ASP_BRL                 Decimal @map("ASP BRL") @db.Decimal(18, 2)
+  ASP_USD                 Decimal @map("ASP USD") @db.Decimal(18, 2)
+  EQ_Fator                Decimal @map("EQ Fator") @db.Decimal(18, 4)
+  Unidade_Equivalente     String  @map("Unidade Equivalente") @db.VarChar(100)
+  Ativo                   Boolean @map("@Ativo")
+  fk_Cod_Produto_Agrupado String? @map("#fk_Cod_Produto_Agrupado") @db.VarChar(20)
+}
+
+model pbi_d_produto_agrupado {
+  pk_Cod_Produto_Agrupado_ String   @id(map: "PK_pbi_d_produto_agrupamento") @map("(pk_Cod_Produto_Agrupado)") @db.VarChar(20)
+  Produto_Agrupado         String   @db.VarChar(100)
+  Linha_Agrupado           String   @db.VarChar(100)
+  fk_Cod_Linha             Decimal  @map("#fk_Cod_Linha") @db.Decimal(18, 0)
+  Linha                    String   @db.VarChar(100)
+  idx_Grupo                Decimal  @map("#idx_Grupo") @db.Decimal(18, 0)
+  Grupo                    String   @db.VarChar(100)
+  idx_Grupo_Venda          Decimal  @map("#idx_Grupo_Venda") @db.Decimal(18, 0)
+  Grupo_Venda              String   @map("Grupo Venda") @db.VarChar(100)
+  fk_Cod_Produto           String?  @map("#fk_Cod_Produto") @db.VarChar(50)
+  Produto                  String?  @db.VarChar(100)
+  ASP_BRL                  Decimal? @map("ASP BRL") @db.Decimal(18, 2)
+  ASP_USD                  Decimal? @map("ASP USD") @db.Decimal(18, 2)
+  EQ_Fator                 Decimal? @map("EQ Fator") @db.Decimal(18, 4)
+  Unidade_Venda            String?  @map("Unidade Venda") @db.VarChar(100)
+  Unidade_Equivalente      String   @map("Unidade Equivalente") @db.VarChar(100)
+}
+
+model pbi_d_produto_linha {
+  pk_Cod_Linha_           Decimal @id(map: "PK_pbi_d_produto_linha") @map("(pk_Cod_Linha)") @db.Decimal(18, 0)
+  Linha                   String  @db.VarChar(100)
+  idx_Grupo               Decimal @map("#idx_Grupo") @db.Decimal(18, 0)
+  Grupo                   String  @db.VarChar(100)
+  idx_Grupo_Venda         Decimal @map("#idx_Grupo_Venda") @db.Decimal(18, 0)
+  Grupo_Venda             String  @map("Grupo Venda") @db.VarChar(100)
+  Unidade_Equivalente     String  @map("Unidade Equivalente") @db.VarChar(100)
+  fk_Cod_Produto_Agrupado String  @unique(map: "IX_pbi_d_produto_linha") @map("#fk_Cod_Produto_Agrupado") @db.VarChar(20)
+}
+
+model pbi_f_estoque_ultimo {
+  fk_Ano_Mes               Decimal   @map("[#fk_Ano_Mes") @db.Decimal(18, 0)
+  fk_Id_Grupo_Distribuidor Decimal   @map("#fk_Id_Grupo_Distribuidor") @db.Decimal(18, 0)
+  Data                     DateTime? @db.Date
+
+  @@id([fk_Ano_Mes, fk_Id_Grupo_Distribuidor], map: "PK_pbi_f_estoque_ultimo")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model pbi_f_movimento {
+  fk_Cod_Tipo_Movimento    String  @map("#fk_Cod_Tipo_Movimento") @db.VarChar(8)
+  Cod_Grupo                String  @db.VarChar(2)
+  Cod_Forma                String  @db.VarChar(2)
+  Cod_Valor                String  @db.VarChar(2)
+  Cod_Agrupamento          String  @db.VarChar(2)
+  fk_Ano_Mes               Decimal @map("#fk_Ano_Mes") @db.Decimal(18, 0)
+  fk_Email_Representante   String  @map("#fk_Email_Representante") @db.VarChar(100)
+  fk_Id_Grupo_Distribuidor Decimal @map("#fk_Id_Grupo_Distribuidor") @db.Decimal(18, 0)
+  fk_CNPJ_Estabelecimento  Decimal @map("#fk_CNPJ_Estabelecimento") @db.Decimal(18, 0)
+  fk_Cod_Produto           String? @map("#fk_Cod_Produto") @db.VarChar(50)
+  fk_Cod_Linha             Decimal @map("#fk_Cod_Linha") @db.Decimal(18, 0)
+  fk_Cod_Produto_Agrupado  String  @map("#fk_Cod_Produto_Agrupado") @db.VarChar(20)
+  qt                       Decimal @default(0, map: "DF_pbi_f_movimento_=qt") @map("=qt") @db.Decimal(38, 0)
+  qt_UN                    Decimal @default(0, map: "DF_pbi_f_movimento_=qt_UN") @map("=qt_UN") @db.Decimal(38, 0)
+  qt_EQ                    Decimal @default(0, map: "DF_pbi_f_movimento_=qt_EQ") @map("=qt_EQ") @db.Decimal(38, 4)
+  qt_BRL_ASP               Decimal @default(0, map: "DF_pbi_f_movimento_=qt_BRL_ASP") @map("=qt_BRL_ASP") @db.Decimal(38, 2)
+  qt_USD_ASP               Decimal @default(0, map: "DF_pbi_f_movimento_=qt_USD_ASP") @map("=qt_USD_ASP") @db.Decimal(38, 4)
+  qt_BRL                   Decimal @default(0, map: "DF_pbi_f_movimento_=qt_BRL") @map("=qt_BRL") @db.Decimal(38, 2)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model pbi_f_movimento_36 {
+  fk_Cod_Tipo_Movimento    String   @map("#fk_Cod_Tipo_Movimento") @db.VarChar(8)
+  fk_Email_Representante   String   @map("#fk_Email_Representante") @db.VarChar(100)
+  fk_Id_Grupo_Distribuidor Decimal  @map("#fk_Id_Grupo_Distribuidor") @db.Decimal(18, 0)
+  fk_CNPJ_Estabelecimento  Decimal  @map("#fk_CNPJ_Estabelecimento") @db.Decimal(18, 0)
+  fk_Cod_Linha             Decimal  @map("#fk_Cod_Linha") @db.Decimal(18, 0)
+  fk_Cod_Produto           String?  @map("#fk_Cod_Produto") @db.VarChar(50)
+  fk_Cod_Produto_Agrupado  String   @map("#fk_Cod_Produto_Agrupado") @db.VarChar(20)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 01 Decimal? @map("01") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 02 Decimal? @map("02") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 03 Decimal? @map("03") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 04 Decimal? @map("04") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 05 Decimal? @map("05") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 06 Decimal? @map("06") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 07 Decimal? @map("07") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 08 Decimal? @map("08") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 09 Decimal? @map("09") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 10 Decimal? @map("10") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 11 Decimal? @map("11") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 12 Decimal? @map("12") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 13 Decimal? @map("13") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 14 Decimal? @map("14") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 15 Decimal? @map("15") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 16 Decimal? @map("16") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 17 Decimal? @map("17") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 18 Decimal? @map("18") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 19 Decimal? @map("19") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 20 Decimal? @map("20") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 21 Decimal? @map("21") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 22 Decimal? @map("22") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 23 Decimal? @map("23") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 24 Decimal? @map("24") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 25 Decimal? @map("25") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 26 Decimal? @map("26") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 27 Decimal? @map("27") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 28 Decimal? @map("28") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 29 Decimal? @map("29") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 30 Decimal? @map("30") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 31 Decimal? @map("31") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 32 Decimal? @map("32") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 33 Decimal? @map("33") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 34 Decimal? @map("34") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 35 Decimal? @map("35") @db.Decimal(38, 0)
+  /// This field was commented out because of an invalid name. Please provide a valid one that matches [a-zA-Z][a-zA-Z0-9_]*
+  // 36 Decimal? @map("36") @db.Decimal(38, 0)
+  MAT_03                   Decimal? @map("MAT 03") @db.Decimal(38, 0)
+  MAT_06                   Decimal? @map("MAT 06") @db.Decimal(38, 0)
+  MAT_12                   Decimal? @map("MAT 12") @db.Decimal(38, 0)
+  MAT_24                   Decimal? @map("MAT 24") @db.Decimal(38, 0)
+  MAT_36                   Decimal? @map("MAT 36") @db.Decimal(38, 0)
+  MAT_Retrasado            Decimal? @map("MAT Retrasado") @db.Decimal(38, 0)
+  MAT_Passado              Decimal? @map("MAT Passado") @db.Decimal(38, 0)
+  MAT_Atual                Decimal? @map("MAT Atual") @db.Decimal(38, 0)
+  Media_24                 Decimal? @map("Media 24") @db.Decimal(38, 6)
+  Media_12                 Decimal? @map("Media 12") @db.Decimal(38, 6)
+  Media_06                 Decimal? @map("Media 06") @db.Decimal(38, 6)
+  Media_03                 Decimal? @map("Media 03") @db.Decimal(38, 6)
+  Media_Ponderada          Decimal? @map("Media Ponderada") @db.Decimal(38, 8)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model pbi_f_movimento_mensal {
+  fk_Cod_Tipo_Movimento    String   @map("#fk_Cod_Tipo_Movimento") @db.VarChar(8)
+  fk_idx_Ano               Decimal  @map("#fk_idx_Ano") @db.Decimal(18, 0)
+  fk_Email_Representante   String   @map("#fk_Email_Representante") @db.VarChar(100)
+  fk_Id_Grupo_Distribuidor Decimal  @map("#fk_Id_Grupo_Distribuidor") @db.Decimal(18, 0)
+  fk_CNPJ_Estabelecimento  Decimal  @map("#fk_CNPJ_Estabelecimento") @db.Decimal(18, 0)
+  fk_Cod_Linha             Decimal  @map("#fk_Cod_Linha") @db.Decimal(18, 0)
+  fk_Cod_Produto           String?  @map("#fk_Cod_Produto") @db.VarChar(50)
+  fk_Cod_Produto_Agrupado  String   @map("#fk_Cod_Produto_Agrupado") @db.VarChar(20)
+  Jul                      Decimal? @map("01-Jul") @db.Decimal(38, 0)
+  Ago                      Decimal? @map("02-Ago") @db.Decimal(38, 0)
+  Set                      Decimal? @map("03-Set") @db.Decimal(38, 0)
+  Out                      Decimal? @map("04-Out") @db.Decimal(38, 0)
+  Nov                      Decimal? @map("05-Nov") @db.Decimal(38, 0)
+  Dez                      Decimal? @map("06-Dez") @db.Decimal(38, 0)
+  Jan                      Decimal? @map("07-Jan") @db.Decimal(38, 0)
+  Fev                      Decimal? @map("08-Fev") @db.Decimal(38, 0)
+  Mar                      Decimal? @map("09-Mar") @db.Decimal(38, 0)
+  Abr                      Decimal? @map("10-Abr") @db.Decimal(38, 0)
+  Mai                      Decimal? @map("11-Mai") @db.Decimal(38, 0)
+  Jun                      Decimal? @map("12-Jun") @db.Decimal(38, 0)
+  Tri_01                   Decimal? @map("Tri-01") @db.Decimal(38, 0)
+  Tri_02                   Decimal? @map("Tri-02") @db.Decimal(38, 0)
+  Tri_03                   Decimal? @map("Tri-03") @db.Decimal(38, 0)
+  Tri_04                   Decimal? @map("Tri-04") @db.Decimal(38, 0)
+  Semestre_01              Decimal? @map("Semestre-01") @db.Decimal(38, 0)
+  Semestre_02              Decimal? @map("Semestre-02") @db.Decimal(38, 0)
+  YTD                      Decimal? @db.Decimal(38, 0)
+  FY                       Decimal? @db.Decimal(38, 0)
+  Media                    Decimal? @db.Decimal(38, 6)
+  Mes_Atual                Decimal? @map("Mes-Atual") @db.Decimal(38, 0)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model pbi_f_movimento_tmp {
+  fk_Cod_Tipo_Movimento    String  @map("#fk_Cod_Tipo_Movimento") @db.VarChar(8)
+  Cod_Grupo                String  @db.VarChar(2)
+  Cod_Forma                String  @db.VarChar(2)
+  Cod_Valor                String  @db.VarChar(2)
+  Cod_Agrupamento          String  @db.VarChar(2)
+  fk_Ano_Mes               Decimal @map("#fk_Ano_Mes") @db.Decimal(18, 0)
+  fk_Email_Representante   String  @map("#fk_Email_Representante") @db.VarChar(100)
+  fk_Id_Grupo_Distribuidor Decimal @map("#fk_Id_Grupo_Distribuidor") @db.Decimal(18, 0)
+  fk_CNPJ_Estabelecimento  Decimal @map("#fk_CNPJ_Estabelecimento") @db.Decimal(18, 0)
+  fk_Cod_Produto           String? @map("#fk_Cod_Produto") @db.VarChar(50)
+  fk_Cod_Linha             Decimal @map("#fk_Cod_Linha") @db.Decimal(18, 0)
+  fk_Cod_Produto_Agrupado  String  @map("#fk_Cod_Produto_Agrupado") @db.VarChar(20)
+  qt                       Decimal @map("=qt") @db.Decimal(38, 0)
+  qt_UN                    Decimal @map("=qt_UN") @db.Decimal(38, 0)
+  qt_EQ                    Decimal @map("=qt_EQ") @db.Decimal(38, 4)
+  qt_BRL_ASP               Decimal @map("=qt_BRL_ASP") @db.Decimal(38, 2)
+  qt_USD_ASP               Decimal @map("=qt_USD_ASP") @db.Decimal(38, 4)
+  qt_BRL                   Decimal @map("=qt_BRL") @db.Decimal(38, 2)
+
+  @@ignore
+}
+
+model SYS_DOLAR_PADRAO {
+  ID               Decimal   @id(map: "PK_SYS_DOLAR_PADRAO") @db.Decimal(18, 0)
+  DOLAR_PADRAO     Decimal   @db.Decimal(18, 4)
+  OBSERVACAO       String?   @db.VarChar(100)
+  DATA_ATUALIZACAO DateTime? @db.DateTime
+
+  @@index([DOLAR_PADRAO], map: "IX_SYS_DOLAR_PADRAO")
+}
+
+model SYS_FABRICANTE {
+  CNPJ_FABRICANTE           Decimal                   @id(map: "PK__TBL_FABR__3B37865761A75822") @db.Decimal(18, 0)
+  ID_GRUPO_DISTRIBUIDOR     Decimal                   @default(1, map: "DF__TBL_FABRI__ID_GR__1FF8A574") @db.Decimal(18, 0)
+  TBL_DISTRIBUIDORES        TBL_DISTRIBUIDORES        @relation(fields: [CNPJ_FABRICANTE], references: [CNPJ_DISTRIBUIDOR], onUpdate: NoAction, map: "FK_SYS_FABRICANTE_TBL_DISTRIBUIDORES")
+  TBL_DISTRIBUIDORES_GRUPOS TBL_DISTRIBUIDORES_GRUPOS @relation(fields: [ID_GRUPO_DISTRIBUIDOR], references: [ID_GRUPO_DISTRIBUIDOR], onUpdate: NoAction, map: "FK_TBL_FABRICANTE_TBL_DISTRIBUIDORES_GRUPOS")
+  TBL_ESTABELECIMENTOS      TBL_ESTABELECIMENTOS      @relation(fields: [CNPJ_FABRICANTE], references: [CNPJ], onUpdate: NoAction, map: "FK_TBL_FABRICANTE_TBL_ESTABELECIMENTOS")
+
+  @@index([CNPJ_FABRICANTE], map: "IX_SYS_FABRICANTE_CNPJ_FABRICANTE")
+  @@index([ID_GRUPO_DISTRIBUIDOR], map: "IX_SYS_FABRICANTE_ID_GRUPO_DISTRIBUIDOR")
+}
+
+model SYS_MOVIMENTO_AGRUPAMENTO {
+  COD_AGRUPAMENTO    String               @id(map: "PK_SYS_MOVIMENTO_AGRUPAMENTO_COD_AGRUPAMENTO") @db.VarChar(2)
+  AGRUPAMENTO        String?              @unique(map: "IX_SYS_MOVIMENTO_AGRUPAMENTO") @db.VarChar(50)
+  SYS_MOVIMENTO_TIPO SYS_MOVIMENTO_TIPO[]
+
+  @@index([COD_AGRUPAMENTO], map: "IDX_SYS_MOVIMENTO_AGRUPAMENTO_COD_AGRUPAMENTO")
+  @@index([AGRUPAMENTO], map: "IX_SYS_MOVIMENTO_AGRUPAMENTO_AGRUPAMENTO")
+}
+
+model SYS_MOVIMENTO_FORMA {
+  COD_FORMA          String               @id(map: "PK_SYS_MOVIMENTO_FORMA") @db.VarChar(2)
+  FORMA              String?              @unique(map: "IX_SYS_MOVIMENTO_FORMA") @db.VarChar(50)
+  SYS_MOVIMENTO_TIPO SYS_MOVIMENTO_TIPO[]
+
+  @@index([COD_FORMA], map: "IX_SYS_MOVIMENTO_FORMA_COD_FORMA")
+  @@index([FORMA], map: "IX_SYS_MOVIMENTO_FORMA_FORMA")
+}
+
+model SYS_MOVIMENTO_GRUPO {
+  COD_GRUPO          String               @id(map: "PK_SYS_MOVIMENTO_GRUPO_COD_GRUPO") @unique(map: "IX_SYS_MOVIMENTO_GRUPO_COD_GRUPO") @db.VarChar(2)
+  GRUPO              String?              @db.VarChar(50)
+  SYS_MOVIMENTO_TIPO SYS_MOVIMENTO_TIPO[]
+
+  @@index([COD_GRUPO], map: "IDX_SYS_MOVIMENTO_GRUPO_COD_GRUPO")
+  @@index([GRUPO], map: "IDX_SYS_MOVIMENTO_GRUPO_GRUPO")
+}
+
+model SYS_MOVIMENTO_TIPO {
+  COD_TIPO                  String                    @id(map: "PK_SYS_MOVIMENTO_TIPO") @db.VarChar(8)
+  TIPO                      String?                   @unique(map: "IX_SYS_MOVIMENTO_TIPO_TIPO") @db.VarChar(200)
+  COD_GRUPO                 String                    @db.VarChar(2)
+  COD_FORMA                 String                    @db.VarChar(2)
+  COD_VALOR                 String                    @db.VarChar(2)
+  COD_AGRUPAMENTO           String                    @db.VarChar(2)
+  SYS_MOVIMENTO_AGRUPAMENTO SYS_MOVIMENTO_AGRUPAMENTO @relation(fields: [COD_AGRUPAMENTO], references: [COD_AGRUPAMENTO], onUpdate: NoAction, map: "FK_SYS_MOVIMENTO_TIPO_SYS_MOVIMENTO_AGRUPAMENTO")
+  SYS_MOVIMENTO_FORMA       SYS_MOVIMENTO_FORMA       @relation(fields: [COD_FORMA], references: [COD_FORMA], onUpdate: NoAction, map: "FK_SYS_MOVIMENTO_TIPO_SYS_MOVIMENTO_FORMA")
+  SYS_MOVIMENTO_GRUPO       SYS_MOVIMENTO_GRUPO       @relation(fields: [COD_GRUPO], references: [COD_GRUPO], onUpdate: NoAction, map: "FK_SYS_MOVIMENTO_TIPO_SYS_MOVIMENTO_GRUPO")
+  SYS_MOVIMENTO_VALOR       SYS_MOVIMENTO_VALOR       @relation(fields: [COD_VALOR], references: [COD_VALOR], onUpdate: NoAction, map: "FK_SYS_MOVIMENTO_TIPO_SYS_MOVIMENTO_VALOR")
+
+  @@index([COD_AGRUPAMENTO], map: "IDX_SYS_MOVIMENTO_TIPO_COD_AGRUPAMENTO")
+  @@index([COD_FORMA], map: "IDX_SYS_MOVIMENTO_TIPO_COD_FORMA")
+  @@index([COD_GRUPO], map: "IDX_SYS_MOVIMENTO_TIPO_COD_GRUPO")
+  @@index([COD_TIPO], map: "IDX_SYS_MOVIMENTO_TIPO_COD_TIPO")
+  @@index([COD_VALOR], map: "IDX_SYS_MOVIMENTO_TIPO_COD_VALOR")
+  @@index([TIPO], map: "IDX_SYS_MOVIMENTO_TIPO_TIPO")
+}
+
+model SYS_MOVIMENTO_VALOR {
+  COD_VALOR          String               @id(map: "PK_SYS_MOVIMENTO_VALOR_COD_VALOR") @db.VarChar(2)
+  VALOR              String?              @unique(map: "IX_SYS_MOVIMENTO_VALOR_VALOR") @db.VarChar(50)
+  SYS_MOVIMENTO_TIPO SYS_MOVIMENTO_TIPO[]
+
+  @@index([COD_VALOR], map: "IDX_SYS_MOVIMENTO_VALOR_COD_VALOR")
+  @@index([VALOR], map: "IDX_SYS_MOVIMENTO_VALOR_VALOR")
+}
+
+model SYS_USUARIOS_PADRAO {
+  EMAIL                         String                        @id(map: "PK_SYS_USUARIOS_PADRAO") @default("@", map: "DF_SYS_USUARIOS_PADRAO_EMAIL") @db.VarChar(100)
+  DATA_INCLUSAO                 DateTime                      @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_SYS_USUARIOS_PADRAO_DATA_INCLUSAO") @db.DateTime
+  TBL_FV_REPRESENTANTES_ACESSO  TBL_FV_REPRESENTANTES_ACESSO  @relation(fields: [EMAIL], references: [EMAIL_REPRESENTANTE_ACESSO], onUpdate: NoAction, map: "FK_SYS_USUARIOS_PADRAO_TBL_FV_REPRESENTANTES_ACESSO")
+  TBL_FV_REPRESENTANTES_DEMANDA TBL_FV_REPRESENTANTES_DEMANDA @relation(fields: [EMAIL], references: [EMAIL_REPRESENTANTE_DEMANDA], onUpdate: NoAction, map: "FK_SYS_USUARIOS_PADRAO_TBL_FV_REPRESENTANTES_DEMANDA")
+  TBL_FV_REPRESENTANTES_VENDA   TBL_FV_REPRESENTANTES_VENDA   @relation(fields: [EMAIL], references: [EMAIL_REPRESENTANTE_VENDA], onUpdate: NoAction, map: "FK_SYS_USUARIOS_PADRAO_TBL_FV_REPRESENTANTES_VENDA")
+  TBL_USUARIOS                  TBL_USUARIOS                  @relation(fields: [EMAIL], references: [EMAIL], onUpdate: NoAction, map: "FK_SYS_USUARIOS_PADRAO_TBL_USUARIOS")
+  TBL_USUARIOS_HIERARQUIA       TBL_USUARIOS_HIERARQUIA       @relation(fields: [EMAIL], references: [EMAIL], onUpdate: NoAction, map: "FK_SYS_USUARIOS_PADRAO_TBL_USUARIOS_HIERARQUIA")
+
+  @@index([EMAIL], map: "IX_SYS_USUARIOS_PADRAO")
+}
+
+model sysdiagrams {
+  name         String @db.NVarChar(128)
+  principal_id Int
+  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B6132392507") @default(autoincrement())
+  version      Int?
+  definition   Bytes?
+
+  @@unique([principal_id, name], map: "UK_principal_name")
+}
+
+model TBL_DATAS_ANOS {
+  ANO                                Decimal                              @id(map: "PK_TBL_DATAS_ANOS") @db.Decimal(18, 0)
+  TBL_DATAS_DOLAR                    TBL_DATAS_DOLAR[]
+  TBL_MOVIMENTO_COTAS_DEMANDA_BRASIL TBL_MOVIMENTO_COTAS_DEMANDA_BRASIL[]
+  TBL_MOVIMENTO_COTAS_VENDA_BRASIL   TBL_MOVIMENTO_COTAS_VENDA_BRASIL[]
+  TBL_MOVIMENTO_DEMANDA              TBL_MOVIMENTO_DEMANDA[]
+  TBL_MOVIMENTO_ESTOQUE              TBL_MOVIMENTO_ESTOQUE[]
+  TBL_MOVIMENTO_VENDA                TBL_MOVIMENTO_VENDA[]
+
+  @@index([ANO], map: "IX_TBL_DATAS_ANOS")
+}
+
+model TBL_DATAS_DIAS {
+  DIA                   Decimal                 @id(map: "PK_TBL_DATAS_DIAS") @db.Decimal(18, 0)
+  TBL_MOVIMENTO_ESTOQUE TBL_MOVIMENTO_ESTOQUE[]
+
+  @@index([DIA], map: "IX_TBL_DATAS_DIAS")
+}
+
+model TBL_DATAS_DOLAR {
+  ANO             Decimal         @db.Decimal(18, 0)
+  MES             Decimal         @db.Decimal(18, 0)
+  DOLAR           Decimal         @default(0, map: "DF_TBL_DATAS_DOLAR_DOLAR") @db.Decimal(18, 4)
+  TBL_DATAS_ANOS  TBL_DATAS_ANOS  @relation(fields: [ANO], references: [ANO], onUpdate: NoAction, map: "FK_TBL_DATAS_DOLAR_TBL_DATAS_ANOS")
+  TBL_DATAS_MESES TBL_DATAS_MESES @relation(fields: [MES], references: [MES], onUpdate: NoAction, map: "FK_TBL_DATAS_DOLAR_TBL_DATAS_MESES")
+
+  @@id([ANO, MES], map: "PK_TBL_DATAS_DOLAR")
+  @@index([ANO], map: "IX_TBL_DATAS_DOLAR_ANO")
+  @@index([DOLAR], map: "IX_TBL_DATAS_DOLAR_DOLAR")
+  @@index([MES], map: "IX_TBL_DATAS_DOLAR_MES")
+}
+
+model TBL_DATAS_MESES {
+  MES                                Decimal                              @id(map: "PK_TBL_DATAS_MESES") @db.Decimal(18, 0)
+  MES_SIGLA                          String                               @db.VarChar(10)
+  TRIMESTRE                          Decimal                              @db.Decimal(18, 0)
+  TRIMESTRE_SIGLA                    String                               @db.VarChar(10)
+  SEMESTRE                           Decimal                              @db.Decimal(18, 0)
+  SEMESTRE_SIGLA                     String                               @db.VarChar(10)
+  ANO_FISCAL_FATOR                   Decimal                              @default(0, map: "DF__TBL_DATAS__ANO_F__7E77B618") @db.Decimal(18, 0)
+  MES_FISCAL                         Decimal                              @default(0, map: "DF__TBL_DATAS__MES_F__7F6BDA51") @db.Decimal(18, 0)
+  MES_FISCAL_SIGLA                   String                               @db.VarChar(10)
+  TRIMESTRE_FISCAL                   Decimal                              @default(0, map: "DF__TBL_DATAS__TRIME__015422C3") @db.Decimal(18, 0)
+  TRIMESTRE_FISCAL_SIGLA             String                               @db.VarChar(10)
+  SEMESTRE_FISCAL                    Decimal                              @default(0, map: "DF__TBL_DATAS__SEMES__024846FC") @db.Decimal(18, 0)
+  SEMESTRE_FISCAL_SIGLA              String                               @db.VarChar(10)
+  TBL_DATAS_DOLAR                    TBL_DATAS_DOLAR[]
+  TBL_MOVIMENTO_COTAS_DEMANDA_BRASIL TBL_MOVIMENTO_COTAS_DEMANDA_BRASIL[]
+  TBL_MOVIMENTO_COTAS_VENDA_BRASIL   TBL_MOVIMENTO_COTAS_VENDA_BRASIL[]
+  TBL_MOVIMENTO_DEMANDA              TBL_MOVIMENTO_DEMANDA[]
+  TBL_MOVIMENTO_ESTOQUE              TBL_MOVIMENTO_ESTOQUE[]
+  TBL_MOVIMENTO_VENDA                TBL_MOVIMENTO_VENDA[]
+
+  @@index([MES], map: "IX_TBL_DATAS_MESES_MES")
+  @@index([MES_FISCAL], map: "IX_TBL_DATAS_MESES_MES_FISCAL")
+  @@index([MES_FISCAL_SIGLA], map: "IX_TBL_DATAS_MESES_MES_FISCAL_SIGLA")
+  @@index([MES_SIGLA], map: "IX_TBL_DATAS_MESES_MES_SIGLA")
+  @@index([SEMESTRE], map: "IX_TBL_DATAS_MESES_SEMESTRE")
+  @@index([SEMESTRE_FISCAL], map: "IX_TBL_DATAS_MESES_SEMESTRE_FISCAL")
+  @@index([SEMESTRE_SIGLA], map: "IX_TBL_DATAS_MESES_SEMESTRE_SIGLA")
+  @@index([SEMESTRE_FISCAL_SIGLA], map: "IX_TBL_DATAS_MESES_SEMESTREFISCAL_SIGLA")
+  @@index([TRIMESTRE], map: "IX_TBL_DATAS_MESES_TRIMESTRE")
+  @@index([TRIMESTRE_FISCAL], map: "IX_TBL_DATAS_MESES_TRIMESTRE_FISCAL")
+  @@index([TRIMESTRE_FISCAL_SIGLA], map: "IX_TBL_DATAS_MESES_TRIMESTRE_FISCAL_SIGLA")
+  @@index([TRIMESTRE_SIGLA], map: "IX_TBL_DATAS_MESES_TRIMESTRE_SIGLA")
+}
+
+model TBL_DATAS_PERIODOS {
+  PERIODO_INDICE Decimal @id(map: "PK__TBL_DATAS_PERIODOS") @db.Decimal(18, 0)
+  PERIODO        String? @unique(map: "IX_TBL_DATAS_PERIODOS") @db.VarChar(20)
+
+  @@index([PERIODO_INDICE], map: "IDX_TBL_DATAS_PERIODOS_PERIODO_INDICE")
+  @@index([PERIODO], map: "IX_TBL_DATAS_PERIODOS_PERIODO")
+}
+
+model TBL_DISTRIBUIDORES {
+  CNPJ_DISTRIBUIDOR         Decimal                   @id(map: "PK_TBL_DISTRIBUIDORES") @db.Decimal(18, 0)
+  ID_GRUPO_DISTRIBUIDOR     Decimal                   @default(1, map: "DF__TBL_DISTR__ID_GR__1209AD79") @db.Decimal(18, 0)
+  ESTABELECIMENTO           String                    @db.VarChar(300)
+  RAZAO_SOCIAL              String                    @db.VarChar(300)
+  NOME_FANTASIA             String                    @db.VarChar(300)
+  CIDADE                    String                    @db.VarChar(200)
+  UF                        String                    @db.VarChar(2)
+  ATIVO                     Boolean                   @default(true, map: "DF__TBL_DISTR__ATIVO__15DA3E5D")
+  DATA_INCLUSAO             DateTime                  @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_DISTRIBUIDORES_DATA_INCLUSAO") @db.DateTime
+  DATA_ATUALIZACAO          DateTime                  @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_DISTRIBUIDORES_DATA_ATUALIZACAO") @db.DateTime
+  SYS_FABRICANTE            SYS_FABRICANTE?
+  TBL_DISTRIBUIDORES_GRUPOS TBL_DISTRIBUIDORES_GRUPOS @relation(fields: [ID_GRUPO_DISTRIBUIDOR], references: [ID_GRUPO_DISTRIBUIDOR], onUpdate: NoAction, map: "FK_TBL_DISTRIBUIDORES_TBL_DISTRIBUIDORES_GRUPOS")
+  TBL_ESTABELECIMENTOS      TBL_ESTABELECIMENTOS      @relation(fields: [CNPJ_DISTRIBUIDOR], references: [CNPJ], onUpdate: NoAction, map: "FK_TBL_DISTRIBUIDORES_TBL_ESTABELECIMENTOS")
+  TBL_MOVIMENTO_DEMANDA     TBL_MOVIMENTO_DEMANDA[]
+  TBL_MOVIMENTO_ESTOQUE     TBL_MOVIMENTO_ESTOQUE[]
+
+  @@index([CNPJ_DISTRIBUIDOR], map: "IX_TBL_DISTRIBUIDORES")
+  @@index([CNPJ_DISTRIBUIDOR], map: "IX_TBL_DISTRIBUIDORES_1")
+  @@index([CNPJ_DISTRIBUIDOR], map: "IX_TBL_DISTRIBUIDORES_CNPJ_DISTRIBUIDOR")
+  @@index([ESTABELECIMENTO], map: "IX_TBL_DISTRIBUIDORES_ESTABELECIMENTO")
+  @@index([ID_GRUPO_DISTRIBUIDOR], map: "IX_TBL_DISTRIBUIDORES_ID_GRUPO_DISTRIBUIDOR")
+  @@index([NOME_FANTASIA], map: "IX_TBL_DISTRIBUIDORES_NOME_FANTASIA")
+  @@index([RAZAO_SOCIAL], map: "IX_TBL_DISTRIBUIDORES_RAZAO_SOCIAL")
+}
+
+model TBL_DISTRIBUIDORES_GRUPOS {
+  ID_GRUPO_DISTRIBUIDOR         Decimal                       @id(map: "PK_TBL_DISTRIBUIDORES_GRUPOS") @db.Decimal(18, 0)
+  COD_TIPO_DISTRIBUIDOR         Decimal                       @db.Decimal(18, 0)
+  GRUPO_DISTRIBUIDOR            String                        @unique(map: "IX_TBL_DISTRIBUIDORES_GRUPOS") @db.VarChar(100)
+  EMAIL_REPRESENTANTE_VENDA     String                        @default("orfao@orfao", map: "DF_TBL_DISTRIBUIDORES_GRUPOS_EMAIL_REPRESENTANTE_VENDA") @db.VarChar(100)
+  EMAIL_REPRESENTANTE_DEMANDA   String                        @default("orfao@orfao", map: "DF_TBL_DISTRIBUIDORES_GRUPOS_EMAIL_REPRESENTANTE_DEMANDA") @db.VarChar(100)
+  ATIVO                         Boolean                       @default(true, map: "DF__TBL_DISTR__ATIVO__4959E263")
+  DATA_INCLUSAO                 DateTime                      @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_DISTRIBUIDORES_GRUPOS_DATA_INCLUSAO") @db.DateTime
+  DATA_ATUALIZACAO              DateTime                      @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_DISTRIBUIDORES_GRUPOS_DATA_ATUALIZACAO") @db.DateTime
+  SYS_FABRICANTE                SYS_FABRICANTE[]
+  TBL_DISTRIBUIDORES            TBL_DISTRIBUIDORES[]
+  TBL_DISTRIBUIDORES_TIPO       TBL_DISTRIBUIDORES_TIPO       @relation(fields: [COD_TIPO_DISTRIBUIDOR], references: [COD_TIPO_DISTRIBUDOR], onUpdate: NoAction, map: "FK_TBL_DISTRIBUIDORES_GRUPOS_TBL_DISTRIBUIDORES_TIPO")
+  TBL_FV_REPRESENTANTES_DEMANDA TBL_FV_REPRESENTANTES_DEMANDA @relation(fields: [EMAIL_REPRESENTANTE_DEMANDA], references: [EMAIL_REPRESENTANTE_DEMANDA], onUpdate: NoAction, map: "FK_TBL_DISTRIBUIDORES_GRUPOS_TBL_FV_REPRESENTANTES_DEMANDA")
+  TBL_FV_REPRESENTANTES_VENDA   TBL_FV_REPRESENTANTES_VENDA   @relation(fields: [EMAIL_REPRESENTANTE_VENDA], references: [EMAIL_REPRESENTANTE_VENDA], onUpdate: NoAction, map: "FK_TBL_DISTRIBUIDORES_GRUPOS_TBL_FV_REPRESENTANTES_VENDA")
+
+  @@index([ID_GRUPO_DISTRIBUIDOR], map: "IDX_TBL_DISTRIBUIDORES_GRUPOS")
+  @@index([EMAIL_REPRESENTANTE_DEMANDA], map: "IDX_TBL_DISTRIBUIDORES_GRUPOS_EMAIL_REPRESENTANTE_DEMANDA")
+  @@index([GRUPO_DISTRIBUIDOR], map: "IDX_TBL_DISTRIBUIDORES_GRUPOS_GRUPO_DISTRIBUIDOR")
+  @@index([EMAIL_REPRESENTANTE_VENDA], map: "IDXX_TBL_DISTRIBUIDORES_GRUPOS_EMAIL_REPRESENTANTE_VENDA")
+}
+
+model TBL_DISTRIBUIDORES_TIPO {
+  COD_TIPO_DISTRIBUDOR      Decimal                     @id(map: "PK_TBL_DISTRIBUIDORES_TIPO") @db.Decimal(18, 0)
+  TIPO_DISTRIBUIDOR         String                      @unique(map: "IX_TBL_DISTRIBUIDORES_TIPO") @db.VarChar(100)
+  TBL_DISTRIBUIDORES_GRUPOS TBL_DISTRIBUIDORES_GRUPOS[]
+
+  @@index([COD_TIPO_DISTRIBUDOR], map: "IX_TBL_DISTRIBUIDORES_TIPO_1")
+  @@index([TIPO_DISTRIBUIDOR], map: "IX_TBL_DISTRIBUIDORES_TIPO_2")
+}
+
+model TBL_ESTABELECIMENTOS {
+  CNPJ                          Decimal                       @id(map: "PK_TBL_ESTABELECIMENTOS") @unique(map: "IX_TBL_ESTABELECIMENTOS") @db.Decimal(18, 0)
+  CNES                          String                        @default("0000000", map: "DF__TBL_ESTABE__CNES__2C538F61") @db.VarChar(7)
+  RAZAO_SOCIAL                  String                        @db.VarChar(300)
+  NOME_FANTASIA                 String                        @db.VarChar(300)
+  ID_GRUPO_ESTABELECIMENTO      Decimal                       @default(1, map: "DF__TBL_ESTAB__ID_GR__2D47B39A") @db.Decimal(18, 0)
+  LOGRADOURO                    String?                       @db.VarChar(500)
+  NUMERO                        String?                       @db.VarChar(50)
+  COMPLEMENTO                   String?                       @db.VarChar(300)
+  BAIRRO                        String?                       @db.VarChar(300)
+  CEP                           String                        @default("0000000", map: "DF__TBL_ESTABEL__CEP__2E3BD7D3") @db.VarChar(8)
+  COD_MUNICIPIO                 String                        @db.VarChar(7)
+  COD_NATUREZA                  Decimal                       @db.Decimal(18, 0)
+  EMAIL_REPRESENTANTE_DEMANDA   String                        @default("orfao@orfao", map: "DF__TBL_ESTAB__EMAIL__34E8D562") @db.VarChar(100)
+  TARGET_DEMANDA                Boolean                       @default(false, map: "DF_TBL_ESTABELECIMENTOS_TARGET")
+  EMAIL_REPRESENTANTE_VENDA     String                        @default("orfao@orfao", map: "DF__TBL_ESTAB__EMAIL__38B96646") @db.VarChar(100)
+  TARGET_VENDA                  Boolean                       @default(false, map: "DF_TBL_ESTABELECIMENTOS_TARGET_DEMANDA1")
+  DATA_INCLUSAO                 DateTime                      @default(dbgenerated("[dbo].[Mydate]()"), map: "DF__TBL_ESTAB__DATA___7F4BDEC0") @db.DateTime
+  DATA_ATUALIZACAO              DateTime                      @default(dbgenerated("[dbo].[Mydate]()"), map: "DF_TBL_ESTABELECIMENTOS_DATA_INCLUSAO1") @db.DateTime
+  SYS_FABRICANTE                SYS_FABRICANTE?
+  TBL_DISTRIBUIDORES            TBL_DISTRIBUIDORES?
+  TBL_ESTABELECIMENTOS_GRUPOS   TBL_ESTABELECIMENTOS_GRUPOS   @relation(fields: [ID_GRUPO_ESTABELECIMENTO], references: [ID_GRUPO_ESTABELECIMENTO], onUpdate: NoAction, map: "FK_TBL_ESTABELECIMENTOS_TBL_ESTABELECIMENTOS_GRUPOS")
+  TBL_ESTABELECIMENTOS_NATUREZA TBL_ESTABELECIMENTOS_NATUREZA @relation(fields: [COD_NATUREZA], references: [COD_NATUREZA], onUpdate: NoAction, map: "FK_TBL_ESTABELECIMENTOS_TBL_ESTABELECIMENTOS_NATUREZA")
+  TBL_FV_REPRESENTANTES_DEMANDA TBL_FV_REPRESENTANTES_DEMANDA @relation(fields: [EMAIL_REPRESENTANTE_DEMANDA], references: [EMAIL_REPRESENTANTE_DEMANDA], onUpdate: NoAction, map: "FK_TBL_ESTABELECIMENTOS_TBL_FV_REPRESENTANTES")
+  TBL_FV_REPRESENTANTES_VENDA   TBL_FV_REPRESENTANTES_VENDA   @relation(fields: [EMAIL_REPRESENTANTE_VENDA], references: [EMAIL_REPRESENTANTE_VENDA], onUpdate: NoAction, map: "FK_TBL_ESTABELECIMENTOS_TBL_FV_REPRESENTANTES_VENDA")
+  TBL_MUNICIPIOS                TBL_MUNICIPIOS                @relation(fields: [COD_MUNICIPIO], references: [COD_MUNICIPIO], onUpdate: NoAction, map: "FK_TBL_ESTABELECIMENTOS_TBL_MUNICIPIOS")
+  TBL_MOVIMENTO_DEMANDA         TBL_MOVIMENTO_DEMANDA[]
+  TBL_MOVIMENTO_VENDA           TBL_MOVIMENTO_VENDA[]
+
+  @@index([CEP], map: "IX_TBL_ESTABELECIMENTOS_CEP")
+  @@index([CNES], map: "IX_TBL_ESTABELECIMENTOS_CNES")
+  @@index([COD_MUNICIPIO], map: "IX_TBL_ESTABELECIMENTOS_COD_MUNICIPIO")
+  @@index([COD_NATUREZA], map: "IX_TBL_ESTABELECIMENTOS_COD_NATUREZA")
+  @@index([EMAIL_REPRESENTANTE_DEMANDA], map: "IX_TBL_ESTABELECIMENTOS_EMAIL_REPRESENTANTE_DEMANDA")
+  @@index([EMAIL_REPRESENTANTE_VENDA], map: "IX_TBL_ESTABELECIMENTOS_EMAIL_REPRESENTANTE_VENDA")
+  @@index([NOME_FANTASIA], map: "IX_TBL_ESTABELECIMENTOS_NOME_FANTASIA")
+  @@index([RAZAO_SOCIAL], map: "IX_TBL_ESTABELECIMENTOS_RAZAO_SOCIAL")
+  @@index([TARGET_DEMANDA], map: "IX_TBL_ESTABELECIMENTOS_TARGET_DEMANDA")
+  @@index([TARGET_VENDA], map: "IX_TBL_ESTABELECIMENTOS_TARGET_VENDA")
+}
+
+model TBL_ESTABELECIMENTOS_ESFERA {
+  COD_ESFERA                       Decimal                          @id(map: "PK_TBL_ESFERA_ADMINISTRATIVA") @db.Decimal(18, 0)
+  ESFERA                           String                           @db.VarChar(50)
+  GESTAO                           String                           @db.VarChar(50)
+  COD_TIPO_PESSOA                  Decimal                          @db.Decimal(18, 0)
+  TBL_ESTABELECIMENTOS_TIPO_PESSOA TBL_ESTABELECIMENTOS_TIPO_PESSOA @relation(fields: [COD_TIPO_PESSOA], references: [COD_TIPO_PESSOA], onUpdate: NoAction, map: "FK_TBL_ESTABELECIMENTOS_ESFERA_TBL_ESTABELECIMENTOS_TIPO_PESSOA")
+  TBL_ESTABELECIMENTOS_NATUREZA    TBL_ESTABELECIMENTOS_NATUREZA[]
+
+  @@index([COD_ESFERA], map: "IX_TBL_ESTABELECIMENTOS_ESFERA")
+  @@index([COD_TIPO_PESSOA], map: "IX_TBL_ESTABELECIMENTOS_ESFERA_COD_TIPO_PESSOA")
+  @@index([ESFERA], map: "IX_TBL_ESTABELECIMENTOS_ESFERA_ESFERA")
+  @@index([GESTAO], map: "IX_TBL_ESTABELECIMENTOS_ESFERA_GESTAO")
+}
+
+model TBL_ESTABELECIMENTOS_GRUPOS {
+  ID_GRUPO_ESTABELECIMENTO     Decimal                      @id(map: "PK_TBL_ESTABELECIMENTOS_GRUPOS") @db.Decimal(18, 0)
+  GRUPO_ESTABELECIMENTO        String                       @db.VarChar(100)
+  EMAIL_REPRESENTANTE_ACESSO   String                       @default("orfao@orfao", map: "DF_TBL_ESTABELECIMENTOS_GRUPOS_EMAIL_REPRESENTANTE_DEMANDA") @db.VarChar(100)
+  DATA_INCLUSAO                DateTime                     @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_ESTABELECIMENTOS_GRUPOS_DATA_INCLUSAO") @db.DateTime
+  DATA_ATUALIZACAO             DateTime                     @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_ESTABELECIMENTOS_GRUPOS_DATA_ATUALIZACAO") @db.DateTime
+  TBL_ESTABELECIMENTOS         TBL_ESTABELECIMENTOS[]
+  TBL_FV_REPRESENTANTES_ACESSO TBL_FV_REPRESENTANTES_ACESSO @relation(fields: [EMAIL_REPRESENTANTE_ACESSO], references: [EMAIL_REPRESENTANTE_ACESSO], onUpdate: NoAction, map: "FK_TBL_ESTABELECIMENTOS_GRUPOS_TBL_FV_REPRESENTANTES_ACESSO")
+
+  @@index([ID_GRUPO_ESTABELECIMENTO], map: "IX_TBL_ESTABELECIMENTOS_GRUPOS")
+  @@index([EMAIL_REPRESENTANTE_ACESSO], map: "IX_TBL_ESTABELECIMENTOS_GRUPOS_EMAIL_REPRESENTANTE_ACESSO")
+  @@index([GRUPO_ESTABELECIMENTO], map: "IX_TBL_ESTABELECIMENTOS_GRUPOS_GRUPO_ESTABELECIMENTO")
+}
+
+model TBL_ESTABELECIMENTOS_NATUREZA {
+  COD_NATUREZA                Decimal                     @id(map: "PK_TBL_RF_NATUREZA_JURIDICA") @db.Decimal(18, 0)
+  NATUREZA                    String                      @db.NVarChar(200)
+  COD_ESFERA                  Decimal                     @db.Decimal(18, 0)
+  TBL_ESTABELECIMENTOS        TBL_ESTABELECIMENTOS[]
+  TBL_ESTABELECIMENTOS_ESFERA TBL_ESTABELECIMENTOS_ESFERA @relation(fields: [COD_ESFERA], references: [COD_ESFERA], onUpdate: NoAction, map: "FK_TBL_ESTABELECIMENTOS_NATUREZA_TBL_ESTABELECIMENTOS_ESFERA")
+}
+
+model TBL_ESTABELECIMENTOS_TIPO_PESSOA {
+  COD_TIPO_PESSOA             Decimal                       @id(map: "PK_TBL_TIPO_PESSOA") @db.Decimal(18, 0)
+  TIPO_PESSOA                 String                        @unique(map: "IX_TBL_TIPO_PESSOA") @db.VarChar(50)
+  TBL_ESTABELECIMENTOS_ESFERA TBL_ESTABELECIMENTOS_ESFERA[]
+}
+
+model TBL_FV_REPRESENTANTES_ACESSO {
+  EMAIL_REPRESENTANTE_ACESSO  String                        @id(map: "PK__TBL_FV_R__FAE019BF8AC9ED6F") @db.VarChar(100)
+  DATA_INCLUSAO               DateTime                      @default(dbgenerated("[dbo].[MyDate]()"), map: "DF__TBL_FV_RE__DATA___347EC10E") @db.DateTime
+  SYS_USUARIOS_PADRAO         SYS_USUARIOS_PADRAO?
+  TBL_ESTABELECIMENTOS_GRUPOS TBL_ESTABELECIMENTOS_GRUPOS[]
+  TBL_USUARIOS_HIERARQUIA     TBL_USUARIOS_HIERARQUIA       @relation(fields: [EMAIL_REPRESENTANTE_ACESSO], references: [EMAIL], onUpdate: NoAction, map: "FK_TBL_FV_REPRESENTANTES_ACESSO_TBL_USUARIOS_HIERARQUIA")
+
+  @@index([EMAIL_REPRESENTANTE_ACESSO], map: "IX_TBL_FV_REPRESENTANTES_ACESSO")
+}
+
+model TBL_FV_REPRESENTANTES_DEMANDA {
+  EMAIL_REPRESENTANTE_DEMANDA String                        @id(map: "PK__TBL_USUA__161CF72592E76942") @db.VarChar(100)
+  DATA_INCLUSAO               DateTime                      @default(dbgenerated("[dbo].[MyDate]()"), map: "DF__TBL_FV_RE__DATA___1446FBA6") @db.DateTime
+  DATA_ATUALIZACAO            DateTime?                     @default(dbgenerated("[dbo].[MyDate]()"), map: "DF__TBL_FV_RE__DATA___7DA38D70") @db.DateTime
+  SYS_USUARIOS_PADRAO         SYS_USUARIOS_PADRAO?
+  TBL_DISTRIBUIDORES_GRUPOS   TBL_DISTRIBUIDORES_GRUPOS[]
+  TBL_ESTABELECIMENTOS        TBL_ESTABELECIMENTOS[]
+  TBL_USUARIOS_HIERARQUIA     TBL_USUARIOS_HIERARQUIA       @relation(fields: [EMAIL_REPRESENTANTE_DEMANDA], references: [EMAIL], onUpdate: NoAction, map: "FK_TBL_FV_REPRESENTANTES_DEMANDA_TBL_USUARIOS_HIERARQUIA")
+  TBL_MOVIMENTO_COTAS_DEMANDA TBL_MOVIMENTO_COTAS_DEMANDA[]
+  TBL_MUNICIPIOS              TBL_MUNICIPIOS[]
+
+  @@index([EMAIL_REPRESENTANTE_DEMANDA], map: "IX_TBL_FV_REPRESENTANTES_DEMANDA")
+}
+
+model TBL_FV_REPRESENTANTES_VENDA {
+  EMAIL_REPRESENTANTE_VENDA String                      @id(map: "PK__TBL_FV_R__C691E58CF73BF71E") @db.VarChar(100)
+  DATA_INCLUSAO             DateTime                    @default(dbgenerated("[dbo].[MyDate]()"), map: "DF__TBL_FV_RE__DATA___6A1BB7B0") @db.DateTime
+  SYS_USUARIOS_PADRAO       SYS_USUARIOS_PADRAO?
+  TBL_DISTRIBUIDORES_GRUPOS TBL_DISTRIBUIDORES_GRUPOS[]
+  TBL_ESTABELECIMENTOS      TBL_ESTABELECIMENTOS[]
+  TBL_USUARIOS_HIERARQUIA   TBL_USUARIOS_HIERARQUIA     @relation(fields: [EMAIL_REPRESENTANTE_VENDA], references: [EMAIL], onUpdate: NoAction, map: "FK_TBL_FV_REPRESENTANTES_VENDA_TBL_USUARIOS_HIERARQUIA")
+  TBL_MOVIMENTO_COTAS_VENDA TBL_MOVIMENTO_COTAS_VENDA[]
+  TBL_MUNICIPIOS            TBL_MUNICIPIOS[]
+
+  @@index([EMAIL_REPRESENTANTE_VENDA], map: "IX_TBL_FV_REPRESENTANTES_VENDA")
+}
+
+model TBL_MOVIMENTO_COTAS_DEMANDA {
+  ID                                 Decimal                            @unique(map: "IX_TBL_MOVIMENTO_COTAS_DEMANDA") @db.Decimal(18, 0)
+  ANO                                Decimal                            @db.Decimal(18, 0)
+  MES                                Decimal                            @db.Decimal(18, 0)
+  EMAIL_REPRESENTANTE_DEMANDA        String                             @default("orfao@orfao", map: "DF_TBL_MOVIMENTO_COTAS_DEMANDA_EMAIL_REPRESENTANTE_DEMANDA") @db.VarChar(100)
+  COD_PRODUTO_LINHA                  Decimal                            @db.Decimal(18, 0)
+  QTD_EQ                             Decimal                            @default(0, map: "DF__TBL_COTAS__QTD__05E3CDB6") @db.Decimal(18, 2)
+  GARANTIDO                          Boolean                            @default(false, map: "DF_TBL_MOVIMENTO_COTAS_DEMANDA_GARANTIDO")
+  DATA_INCLUSAO                      DateTime                           @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_MOVIMENTO_COTAS_DEMANDA_DATA_INCLUSAO") @db.DateTime
+  TBL_FV_REPRESENTANTES_DEMANDA      TBL_FV_REPRESENTANTES_DEMANDA      @relation(fields: [EMAIL_REPRESENTANTE_DEMANDA], references: [EMAIL_REPRESENTANTE_DEMANDA], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_COTAS_DEMANDA_TBL_FV_REPRESENTANTES_DEMANDA")
+  TBL_MOVIMENTO_COTAS_DEMANDA_BRASIL TBL_MOVIMENTO_COTAS_DEMANDA_BRASIL @relation(fields: [ANO, MES, COD_PRODUTO_LINHA], references: [ANO, MES, COD_PRODUTO_LINHA], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_COTAS_DEMANDA_TBL_MOVIMENTO_COTAS_DEMANDA_BRASIL")
+
+  @@id([ANO, MES, EMAIL_REPRESENTANTE_DEMANDA, COD_PRODUTO_LINHA], map: "PK_TBL_MOVIMENTO_COTAS_DEMANDA")
+  @@index([ANO], map: "IX_TBL_MOVIMENTO_COTAS_DEMANDA_ANO")
+  @@index([COD_PRODUTO_LINHA], map: "IX_TBL_MOVIMENTO_COTAS_DEMANDA_COD_PRODUTO_LINHA")
+  @@index([EMAIL_REPRESENTANTE_DEMANDA], map: "IX_TBL_MOVIMENTO_COTAS_DEMANDA_EMAIL_REPRESENTANTE_DEMANDA")
+  @@index([MES], map: "IX_TBL_MOVIMENTO_COTAS_DEMANDA_MES")
+}
+
+model TBL_MOVIMENTO_COTAS_DEMANDA_BRASIL {
+  ANO                         Decimal                       @db.Decimal(18, 0)
+  MES                         Decimal                       @db.Decimal(18, 0)
+  COD_PRODUTO_LINHA           Decimal                       @db.Decimal(18, 0)
+  QTD_EQ                      Decimal                       @default(0, map: "DF__TBL_MOVIM__QTD_U__133DC8D4") @db.Decimal(18, 0)
+  DATA_INCLUSAO               DateTime                      @default(dbgenerated("[dbo].[MyDate]()"), map: "DF__TBL_MOVIM__DATA___1431ED0D") @db.DateTime
+  TBL_MOVIMENTO_COTAS_DEMANDA TBL_MOVIMENTO_COTAS_DEMANDA[]
+  TBL_PRODUTOS_LINHAS         TBL_PRODUTOS_LINHAS           @relation(fields: [COD_PRODUTO_LINHA], references: [COD_PRODUTO_LINHA], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_COTAS_DEMANDA_BRASIL_TBL_PRODUTOS_LINHAS")
+  TBL_DATAS_ANOS              TBL_DATAS_ANOS                @relation(fields: [ANO], references: [ANO], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_COTAS_DEMANDA_UN_BRASIL_TBL_DATAS_ANOS")
+  TBL_DATAS_MESES             TBL_DATAS_MESES               @relation(fields: [MES], references: [MES], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_COTAS_DEMANDA_UN_BRASIL_TBL_DATAS_MESES")
+
+  @@id([ANO, MES, COD_PRODUTO_LINHA], map: "PK_TBL_MOVIMENTO_COTAS_DEMANDA_BRASIL")
+}
+
+model TBL_MOVIMENTO_COTAS_VENDA {
+  ANO                              Decimal                          @db.Decimal(18, 0)
+  MES                              Decimal                          @db.Decimal(18, 0)
+  EMAIL_REPRESENTANTE_VENDA        String                           @default("orfao@orfao", map: "DF_TBL_MOVIMENTO_COTAS_VENDA_EMAIL_REPRESENTANTE_VENDA") @db.VarChar(100)
+  COD_PRODUTO                      String                           @db.VarChar(50)
+  QTD_UN                           Decimal                          @default(0, map: "DF__TBL_COTAS_c__QTD__0B9CA70C") @db.Decimal(18, 0)
+  QTD_BRL                          Decimal                          @default(0, map: "DF_TBL_MOVIMENTO_COTAS_VENDA_QTD_UN1") @db.Decimal(18, 2)
+  GARANTIDO                        Boolean                          @default(false, map: "DF__TBL_COTAS__IV_GA__0AA882D3")
+  DATA_INCLUSAO                    DateTime                         @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_MOVIMENTO_COTAS_VENDA_DATA_INCLUSAO") @db.DateTime
+  DATA_ATUALIZACAO                 DateTime                         @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_MOVIMENTO_COTAS_VENDA_DATA_ATUALIZACAO") @db.DateTime
+  TBL_FV_REPRESENTANTES_VENDA      TBL_FV_REPRESENTANTES_VENDA      @relation(fields: [EMAIL_REPRESENTANTE_VENDA], references: [EMAIL_REPRESENTANTE_VENDA], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_COTAS_VENDA_TBL_FV_REPRESENTANTES_VENDA")
+  TBL_MOVIMENTO_COTAS_VENDA_BRASIL TBL_MOVIMENTO_COTAS_VENDA_BRASIL @relation(fields: [ANO, MES, COD_PRODUTO], references: [ANO, MES, COD_PRODUTO], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_COTAS_VENDA_TBL_MOVIMENTO_COTAS_VENDA_BRASIL")
+
+  @@id([ANO, MES, EMAIL_REPRESENTANTE_VENDA, COD_PRODUTO], map: "PK_TBL_MOVIMENTO_COTAS_VENDA")
+  @@index([MES], map: "IX_TBL_MOVIMENTO_COTAS_VENDA")
+  @@index([ANO], map: "IX_TBL_MOVIMENTO_COTAS_VENDA_ANO")
+  @@index([COD_PRODUTO], map: "IX_TBL_MOVIMENTO_COTAS_VENDA_COD_PRODUTO")
+  @@index([EMAIL_REPRESENTANTE_VENDA], map: "IX_TBL_MOVIMENTO_COTAS_VENDA_EMAIL_REPRESENTANTE_VENDA")
+}
+
+model TBL_MOVIMENTO_COTAS_VENDA_BRASIL {
+  ANO                       Decimal                     @db.Decimal(18, 0)
+  MES                       Decimal                     @db.Decimal(18, 0)
+  COD_PRODUTO               String                      @db.VarChar(50)
+  QTD_UN                    Decimal                     @default(0, map: "DF__TBL_MOVIM__QTD_U__218BE82B") @db.Decimal(18, 0)
+  ASP                       Decimal                     @db.Decimal(18, 2)
+  QTD_BRL                   Decimal                     @db.Decimal(18, 2)
+  DATA_INCLUSAO             DateTime                    @default(dbgenerated("[dbo].[MyDate]()"), map: "DF__TBL_MOVIM__DATA___22800C64") @db.DateTime
+  TBL_MOVIMENTO_COTAS_VENDA TBL_MOVIMENTO_COTAS_VENDA[]
+  TBL_PRODUTOS              TBL_PRODUTOS                @relation(fields: [COD_PRODUTO], references: [COD_PRODUTO], onUpdate: NoAction, map: "FK__TBL_MOVIM__COD_P__255C790F")
+  TBL_DATAS_ANOS            TBL_DATAS_ANOS              @relation(fields: [ANO], references: [ANO], onUpdate: NoAction, map: "FK__TBL_MOVIMEN__ANO__2374309D")
+  TBL_DATAS_MESES           TBL_DATAS_MESES             @relation(fields: [MES], references: [MES], onUpdate: NoAction, map: "FK__TBL_MOVIMEN__MES__246854D6")
+
+  @@id([ANO, MES, COD_PRODUTO], map: "PK__TBL_MOVI__2643ACB379808C54")
+}
+
+model TBL_MOVIMENTO_DEMANDA {
+  ID_REGISTRO          Decimal              @id(map: "PK__TBL_MOVI__C7B81E6854242E42") @db.Decimal(10, 0)
+  ANO                  Decimal              @db.Decimal(18, 0)
+  MES                  Decimal              @db.Decimal(18, 0)
+  CNPJ_DISTRIBUIDOR    Decimal              @db.Decimal(18, 0)
+  CNPJ_ESTABELECIMENTO Decimal              @db.Decimal(18, 0)
+  COD_PRODUTO          String               @db.VarChar(50)
+  QTD_UN               Decimal              @db.Decimal(18, 0)
+  DATA_INCLUSAO        DateTime             @default(dbgenerated("[dbo].[MyDate]()"), map: "DF__TBL_MOVIM__DATA___675F4696") @db.DateTime
+  TBL_DATAS_ANOS       TBL_DATAS_ANOS       @relation(fields: [ANO], references: [ANO], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_DEMANDA_TBL_DATAS_ANOS")
+  TBL_DATAS_MESES      TBL_DATAS_MESES      @relation(fields: [MES], references: [MES], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_DEMANDA_TBL_DATAS_MESES")
+  TBL_DISTRIBUIDORES   TBL_DISTRIBUIDORES   @relation(fields: [CNPJ_DISTRIBUIDOR], references: [CNPJ_DISTRIBUIDOR], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_DEMANDA_TBL_DISTRIBUIDORES")
+  TBL_ESTABELECIMENTOS TBL_ESTABELECIMENTOS @relation(fields: [CNPJ_ESTABELECIMENTO], references: [CNPJ], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_DEMANDA_TBL_ESTABELECIMENTOS")
+  TBL_PRODUTOS         TBL_PRODUTOS         @relation(fields: [COD_PRODUTO], references: [COD_PRODUTO], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_DEMANDA_TBL_PRODUTOS")
+
+  @@index([ANO], map: "IX_TBL_MOVIMENTO_DEMANDA_ANO")
+  @@index([CNPJ_DISTRIBUIDOR], map: "IX_TBL_MOVIMENTO_DEMANDA_CNPJ_DISTRIBUIDOR")
+  @@index([COD_PRODUTO], map: "IX_TBL_MOVIMENTO_DEMANDA_COD_PRODUTO")
+  @@index([CNPJ_ESTABELECIMENTO], map: "IX_TBL_MOVIMENTO_DEMANDA_CPNJ_ESTABELECIMENTO")
+  @@index([MES], map: "IX_TBL_MOVIMENTO_DEMANDA_MES")
+}
+
+model TBL_MOVIMENTO_ESTOQUE {
+  ID_REGISTRO        Decimal            @unique(map: "IX_TBL_MOVIMENTO_ESTOQUE") @db.Decimal(18, 0)
+  ANO                Decimal            @db.Decimal(18, 0)
+  MES                Decimal            @db.Decimal(18, 0)
+  DIA                Decimal            @db.Decimal(18, 0)
+  COD_PRODUTO        String             @db.VarChar(50)
+  CNPJ_DISTRIBUIDOR  Decimal            @db.Decimal(18, 0)
+  QTD_UN             Decimal            @default(0, map: "DF_TBL_MOVIMENTO_ESTOQUE_QTD_UN") @db.Decimal(18, 0)
+  DATA_INCLUSAO      DateTime           @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_MOVIMENTO_ESTOQUE_DATA_INCLUSAO") @db.DateTime
+  TBL_DATAS_ANOS     TBL_DATAS_ANOS     @relation(fields: [ANO], references: [ANO], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_ESTOQUE_TBL_DATAS_ANOS")
+  TBL_DATAS_DIAS     TBL_DATAS_DIAS     @relation(fields: [DIA], references: [DIA], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_ESTOQUE_TBL_DATAS_DIAS")
+  TBL_DATAS_MESES    TBL_DATAS_MESES    @relation(fields: [MES], references: [MES], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_ESTOQUE_TBL_DATAS_MESES")
+  TBL_DISTRIBUIDORES TBL_DISTRIBUIDORES @relation(fields: [CNPJ_DISTRIBUIDOR], references: [CNPJ_DISTRIBUIDOR], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_ESTOQUE_TBL_DISTRIBUIDORES")
+  TBL_PRODUTOS       TBL_PRODUTOS       @relation(fields: [COD_PRODUTO], references: [COD_PRODUTO], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_ESTOQUE_TBL_PRODUTOS")
+
+  @@id([ANO, MES, DIA, COD_PRODUTO, CNPJ_DISTRIBUIDOR], map: "PK_TBL_MOVIMENTO_ESTOQUE")
+  @@index([ANO], map: "IX_TBL_MOVIMENTO_ESTOQUE_ANO")
+  @@index([CNPJ_DISTRIBUIDOR], map: "IX_TBL_MOVIMENTO_ESTOQUE_CNPJ_DISTRIBUIDOR")
+  @@index([COD_PRODUTO], map: "IX_TBL_MOVIMENTO_ESTOQUE_COD_PRODUTO")
+  @@index([MES], map: "IX_TBL_MOVIMENTO_ESTOQUE_MES")
+}
+
+model TBL_MOVIMENTO_VENDA {
+  ID_REGISTRO          Decimal              @id(map: "PK_TBL_MOVIMENTO_VENDA") @db.Decimal(18, 0)
+  ANO                  Decimal              @db.Decimal(18, 0)
+  MES                  Decimal              @db.Decimal(18, 0)
+  CNPJ                 Decimal              @db.Decimal(18, 0)
+  COD_PRODUTO          String               @db.VarChar(50)
+  QTD_UN               Decimal              @default(0, map: "DF__TBL_MOVIM__QTD_N__5540965B") @db.Decimal(18, 0)
+  QTD_BRL              Decimal              @default(0, map: "DF__TBL_MOVIM__VALOR__5728DECD") @db.Decimal(18, 2)
+  DATA_INCLUSAO        DateTime             @default(dbgenerated("[dbo].[MyDate]()"), map: "DF__TBL_MOVIM__DATA___6E0C4425") @db.DateTime
+  TBL_DATAS_ANOS       TBL_DATAS_ANOS       @relation(fields: [ANO], references: [ANO], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_VENDA_TBL_DATAS_ANOS")
+  TBL_DATAS_MESES      TBL_DATAS_MESES      @relation(fields: [MES], references: [MES], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_VENDA_TBL_DATAS_MESES")
+  TBL_ESTABELECIMENTOS TBL_ESTABELECIMENTOS @relation(fields: [CNPJ], references: [CNPJ], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_VENDA_TBL_ESTABELECIMENTOS")
+  TBL_PRODUTOS         TBL_PRODUTOS         @relation(fields: [COD_PRODUTO], references: [COD_PRODUTO], onUpdate: NoAction, map: "FK_TBL_MOVIMENTO_VENDA_TBL_PRODUTOS")
+
+  @@index([ANO], map: "IX_TBL_MOVIMENTO_VENDA_ANO")
+  @@index([CNPJ], map: "IX_TBL_MOVIMENTO_VENDA_CNPJ")
+  @@index([COD_PRODUTO], map: "IX_TBL_MOVIMENTO_VENDA_COD_PRODUTO")
+  @@index([MES], map: "IX_TBL_MOVIMENTO_VENDA_MES")
+}
+
+model TBL_MUNICIPIOS {
+  COD_MUNICIPIO                 String                        @id(map: "PK_TBL_MUNICIPIOS") @db.VarChar(7)
+  CIDADE                        String                        @db.VarChar(200)
+  CIDADE_UF                     String?                       @unique(map: "IX_TBL_MUNICIPIOS_CIDADE_UF") @db.VarChar(200)
+  UF                            String                        @db.VarChar(2)
+  ESTADO                        String                        @db.VarChar(100)
+  CAPITAL                       Boolean                       @default(false, map: "DF_TBL_MUNICIPIOS_CAPITAL")
+  MICRO_REGIAO                  String                        @db.VarChar(100)
+  MESO_REGIAO                   String                        @db.VarChar(100)
+  REGIAO                        String                        @db.VarChar(100)
+  PAIS                          String                        @default("BRASIL", map: "DF__TBL_MUNICI__PAIS__39E294A9") @db.VarChar(100)
+  LATITUDE                      Float?
+  LONGITUDE                     Float?
+  EMAIL_REPRESENTANTE_DEMANDA   String                        @default("orfao@orfao", map: "DF_TBL_MUNICIPIOS_EMAIL_REPRESENTANTE_DEMANDA") @db.VarChar(100)
+  EMAIL_REPRESENTANTE_VENDA     String                        @default("orfao@orfao", map: "DF_TBL_MUNICIPIOS_EMAIL_REPRESENTANTE_DEMANDA1") @db.VarChar(100)
+  DATA_INCLUSAO                 DateTime                      @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_MUNICIPIOS_DATA_INCLUSAO") @db.DateTime
+  DATA_ATUALIZACAO              DateTime                      @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_MUNICIPIOS_DATA_ATUALIZACAO") @db.DateTime
+  TBL_ESTABELECIMENTOS          TBL_ESTABELECIMENTOS[]
+  TBL_FV_REPRESENTANTES_DEMANDA TBL_FV_REPRESENTANTES_DEMANDA @relation(fields: [EMAIL_REPRESENTANTE_DEMANDA], references: [EMAIL_REPRESENTANTE_DEMANDA], onUpdate: NoAction, map: "FK_TBL_MUNICIPIOS_TBL_FV_REPRESENTANTES_DEMANDA")
+  TBL_FV_REPRESENTANTES_VENDA   TBL_FV_REPRESENTANTES_VENDA   @relation(fields: [EMAIL_REPRESENTANTE_VENDA], references: [EMAIL_REPRESENTANTE_VENDA], onUpdate: NoAction, map: "FK_TBL_MUNICIPIOS_TBL_FV_REPRESENTANTES_VENDA")
+
+  @@index([CIDADE_UF], map: "IDX_TBL_MUNICIPIOS_CIDADE_UF")
+  @@index([EMAIL_REPRESENTANTE_DEMANDA], map: "IDX_TBL_MUNICIPIOS_EMAIL_REPRESENTANTE_DEMANDA")
+  @@index([EMAIL_REPRESENTANTE_VENDA], map: "IDX_TBL_MUNICIPIOS_EMAIL_REPRESENTANTE_VENDA")
+}
+
+model TBL_PRODUTOS {
+  COD_PRODUTO                         String                             @id(map: "PK_TBL_PRODUTOS") @db.VarChar(50)
+  PRODUTO                             String                             @db.VarChar(100)
+  COD_PRODUTO_LINHA                   Decimal                            @db.Decimal(18, 0)
+  COD_UNIDADE_VENDA                   Decimal                            @db.Decimal(18, 0)
+  QTD_UNIDADES_EMBALAGEM_VENDA        Decimal                            @db.Decimal(18, 0)
+  COD_EMBALAGEM_VENDA                 Decimal                            @db.Decimal(18, 0)
+  FATOR_CONVERSAO_UNIDADE_EQUIVALENTE Decimal                            @default(1, map: "DF__TBL_PRODU__FATOR__1A54DAB7") @db.Decimal(18, 4)
+  PRECO_BASE_UNIDADE_VENDA_BRL        Decimal                            @default(1, map: "DF__TBL_PRODU__PRECO__1B48FEF0") @db.Decimal(18, 2)
+  PRECO_BASE_UNIDADE_VENDA_USD        Decimal                            @default(0, map: "DF_TBL_PRODUTOS_PRECO_BASE_DOLAR") @db.Decimal(18, 2)
+  ATIVO                               Boolean                            @default(true, map: "DF__TBL_PRODU__ATIVO__1C3D2329")
+  DATA_INCLUSAO                       DateTime                           @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_PRODUTOS_DATA_INCLUSAO") @db.DateTime
+  DATA_ATUALIZACAO                    DateTime                           @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_PRODUTOS_DATA_ATUALIZACAO") @db.DateTime
+  TBL_MOVIMENTO_COTAS_VENDA_BRASIL    TBL_MOVIMENTO_COTAS_VENDA_BRASIL[]
+  TBL_MOVIMENTO_DEMANDA               TBL_MOVIMENTO_DEMANDA[]
+  TBL_MOVIMENTO_ESTOQUE               TBL_MOVIMENTO_ESTOQUE[]
+  TBL_MOVIMENTO_VENDA                 TBL_MOVIMENTO_VENDA[]
+  TBL_PRODUTOS_EMBALAGEM              TBL_PRODUTOS_EMBALAGEM             @relation(fields: [COD_EMBALAGEM_VENDA], references: [COD_EMBALAGEM], onUpdate: NoAction, map: "FK_TBL_PRODUTOS_TBL_PRODUTOS_EMBALAGEM")
+  TBL_PRODUTOS_LINHAS                 TBL_PRODUTOS_LINHAS                @relation(fields: [COD_PRODUTO_LINHA], references: [COD_PRODUTO_LINHA], onUpdate: NoAction, map: "FK_TBL_PRODUTOS_TBL_PRODUTOS_LINHAS")
+  TBL_PRODUTOS_UNIDADES               TBL_PRODUTOS_UNIDADES              @relation(fields: [COD_UNIDADE_VENDA], references: [COD_UNIDADE], onUpdate: NoAction, map: "FK_TBL_PRODUTOS_TBL_PRODUTOS_UNIDADES")
+
+  @@index([COD_PRODUTO_LINHA], map: "IX_TBL_PRODUTO_COD_LINHA")
+  @@index([PRODUTO], map: "IX_TBL_PRODUTO_PRODUTO")
+}
+
+model TBL_PRODUTOS_EMBALAGEM {
+  COD_EMBALAGEM    Decimal        @id(map: "PK_TBL_PRODUTOS_EMBALAGEM") @db.Decimal(18, 0)
+  EMBALAGEM        String         @unique(map: "IX_TBL_PRODUTOS_EMBALAGEM") @db.VarChar(100)
+  DATA_INCLUSAO    DateTime       @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_PRODUTOS_EMBALAGEM_DATA_INCLUSAO") @db.DateTime
+  DATA_ATUALIZACAO DateTime       @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_PRODUTOS_EMBALAGEM_DATA_ATUALIZACAO") @db.DateTime
+  TBL_PRODUTOS     TBL_PRODUTOS[]
+
+  @@index([COD_EMBALAGEM], map: "IX_TBL_PRODUTOS_EMBALAGEM_COD_EMBALAGE")
+}
+
+model TBL_PRODUTOS_GRUPOS {
+  COD_PRODUTO_GRUPO   Decimal               @id(map: "PK_TBL_PRODUTOS_GRUPOS") @db.Decimal(18, 0)
+  PRODUTO_GRUPO       String                @unique(map: "IX_TBL_PRODUTIVIDADE_GRUPO_PRODUTO_1") @db.VarChar(100)
+  DATA_INCLUSAO       DateTime              @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_PRODUTOS_GRUPOS_DATA_INCLUSAO") @db.DateTime
+  DATA_ATUALIZACAO    DateTime              @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_PRODUTOS_GRUPOS_DATA_ATUALIZACAO") @db.DateTime
+  TBL_PRODUTOS_LINHAS TBL_PRODUTOS_LINHAS[]
+
+  @@index([COD_PRODUTO_GRUPO], map: "IX_TBL_PRODUTOS_GRUPOS")
+}
+
+model TBL_PRODUTOS_GRUPOS_VENDA {
+  COD_GRUPO_VENDA     Decimal               @id(map: "PK__TBL_PRODUTOS_GRUPOS_VENDA") @db.Decimal(18, 0)
+  GRUPO_VENDA         String                @unique(map: "IX_TBL_PRODUTOS_GRUPOS_VENDA") @db.VarChar(100)
+  DATA_INCLUSAO       DateTime              @default(dbgenerated("[dbo].[MyDate]()"), map: "DF__TBL_PRODU__DATA___2CFD9AD7") @db.DateTime
+  DATA_ATUALIZACAO    DateTime              @default(dbgenerated("[dbo].[MyDate]()"), map: "DF__TBL_PRODU__DATA___2DF1BF10") @db.DateTime
+  TBL_PRODUTOS_LINHAS TBL_PRODUTOS_LINHAS[]
+
+  @@index([COD_GRUPO_VENDA], map: "IX_TBL_PRODUTOS_GRUPOS_VENDA_1")
+  @@index([GRUPO_VENDA], map: "IX_TBL_PRODUTOS_GRUPOS_VENDA_2")
+}
+
+model TBL_PRODUTOS_LINHAS {
+  COD_PRODUTO_LINHA                  Decimal                              @id(map: "PK_TBL_PRODUTOS_LINHAS") @db.Decimal(18, 0)
+  COD_PRODUTO_LINHA_ANTIGO           Decimal                              @db.Decimal(18, 0)
+  PRODUTO_LINHA                      String                               @unique(map: "IX_TBL_PRODUTOS_LINHAS") @db.VarChar(100)
+  COD_UNIDADE_EQUIVALENTE            Decimal                              @db.Decimal(18, 0)
+  COD_PRODUTO_GRUPO                  Decimal                              @db.Decimal(18, 0)
+  COD_GRUPO_VENDA                    Decimal                              @db.Decimal(18, 0)
+  DATA_INCLUSAO                      DateTime                             @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_PRODUTOS_LINHAS_DATA_INCLUSAO") @db.DateTime
+  DATA_ATUALIZACAO                   DateTime                             @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_PRODUTOS_LINHAS_DATA_ATUALIZACAO") @db.DateTime
+  TBL_MOVIMENTO_COTAS_DEMANDA_BRASIL TBL_MOVIMENTO_COTAS_DEMANDA_BRASIL[]
+  TBL_PRODUTOS                       TBL_PRODUTOS[]
+  TBL_PRODUTOS_GRUPOS                TBL_PRODUTOS_GRUPOS                  @relation(fields: [COD_PRODUTO_GRUPO], references: [COD_PRODUTO_GRUPO], onUpdate: NoAction, map: "FK_TBL_PRODUTOS_LINHAS_TBL_PRODUTOS_GRUPOS")
+  TBL_PRODUTOS_GRUPOS_VENDA          TBL_PRODUTOS_GRUPOS_VENDA            @relation(fields: [COD_GRUPO_VENDA], references: [COD_GRUPO_VENDA], onUpdate: NoAction, map: "FK_TBL_PRODUTOS_LINHAS_TBL_PRODUTOS_GRUPOS_VENDA")
+  TBL_PRODUTOS_UNIDADES              TBL_PRODUTOS_UNIDADES                @relation(fields: [COD_UNIDADE_EQUIVALENTE], references: [COD_UNIDADE], onUpdate: NoAction, map: "FK_TBL_PRODUTOS_LINHAS_TBL_PRODUTOS_UNIDADES")
+}
+
+model TBL_PRODUTOS_UNIDADES {
+  COD_UNIDADE         Decimal               @id(map: "PK_TBL_PRODUTOS_UNIDADES") @db.Decimal(18, 0)
+  UNIDADE             String                @unique(map: "IX_TBL_PRODUTOS_UNIDADES") @db.VarChar(100)
+  DATA_INCLUSAO       DateTime              @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_PRODUTOS_UNIDADES_DATA_INCLUSAO") @db.DateTime
+  DATA_ATUALIZACAO    DateTime              @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_PRODUTOS_UNIDADES_DATA_ATUALIZACAO") @db.DateTime
+  TBL_PRODUTOS        TBL_PRODUTOS[]
+  TBL_PRODUTOS_LINHAS TBL_PRODUTOS_LINHAS[]
+
+  @@index([COD_UNIDADE], map: "IX_TBL_PRODUTOS_UNIDADES_COD_UNIDADE")
+}
+
+model TBL_USUARIOS {
+  EMAIL                                                                       String                    @id(map: "PK_TBL_USUARIOS") @default("@", map: "DF__TBL_USUAR__EMAIL__2CBDA3B5") @db.VarChar(100)
+  NOME                                                                        String                    @unique(map: "IX_TBL_USUARIOS_NOME") @default("@", map: "DF__TBL_USUARI__NOME__2DB1C7EE") @db.VarChar(200)
+  NOME_CURTO                                                                  String                    @unique(map: "IX_TBL_USUARIOS_NOME_CURTO") @db.VarChar(50)
+  COD_PERFIL                                                                  Decimal                   @db.Decimal(18, 0)
+  ATIVO                                                                       Boolean                   @default(true, map: "DF__TBL_USUAR__ATIVO__373B3228")
+  DATA_INCLUSAO                                                               DateTime                  @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_USUARIOS_DATA_INCLUSAO") @db.DateTime
+  DATA_ATUALIZACAO                                                            DateTime                  @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_USUARIOS_DATA_INCLUSAO1") @db.DateTime
+  SYS_USUARIOS_PADRAO                                                         SYS_USUARIOS_PADRAO?
+  TBL_USUARIOS_PERFIS                                                         TBL_USUARIOS_PERFIS       @relation(fields: [COD_PERFIL], references: [COD_PERFIL], onUpdate: NoAction, map: "FK_TBL_USUARIOS_TBL_USUARIOS_PERFIS")
+  TBL_USUARIOS_HIERARQUIA_TBL_USUARIOS_HIERARQUIA_EMAILToTBL_USUARIOS         TBL_USUARIOS_HIERARQUIA?  @relation("TBL_USUARIOS_HIERARQUIA_EMAILToTBL_USUARIOS")
+  TBL_USUARIOS_HIERARQUIA_TBL_USUARIOS_HIERARQUIA_EMAIL_GERENTEToTBL_USUARIOS TBL_USUARIOS_HIERARQUIA[] @relation("TBL_USUARIOS_HIERARQUIA_EMAIL_GERENTEToTBL_USUARIOS")
+  TBL_USUARIOS_HIERARQUIA_TBL_USUARIOS_HIERARQUIA_EMAIL_DIRETORToTBL_USUARIOS TBL_USUARIOS_HIERARQUIA[] @relation("TBL_USUARIOS_HIERARQUIA_EMAIL_DIRETORToTBL_USUARIOS")
+
+  @@index([ATIVO], map: "IX_TBL_USUARIOS_ATIVO_IDX")
+  @@index([COD_PERFIL], map: "IX_TBL_USUARIOS_COD_PERFIL")
+  @@index([EMAIL], map: "IX_TBL_USUARIOS_EMAIL")
+  @@index([NOME_CURTO], map: "IX_TBL_USUARIOS_NOME_CURTO_IDX")
+  @@index([NOME], map: "IX_TBL_USUARIOS_NOME_IDX")
+}
+
+model TBL_USUARIOS_HIERARQUIA {
+  EMAIL                                                            String                         @id(map: "PK__TBL_USUA__161CF725CC07CBA7") @default("@", map: "DF__TBL_USUAR__EMAIL__605D434C") @db.VarChar(100)
+  EMAIL_GERENTE                                                    String                         @default("gerente@orfao", map: "DF_TBL_USUARIOS_HIERARQUIA_EMAIL1") @db.VarChar(100)
+  EMAIL_DIRETOR                                                    String                         @default("diretor@orfao", map: "DF_TBL_USUARIOS_HIERARQUIA_EMAIL_GERENTE1") @db.VarChar(100)
+  DATA_INCLUSAO                                                    DateTime                       @default(dbgenerated("[dbo].[MyDate]()"), map: "DF__TBL_USUAR__DATA___6339AFF7") @db.DateTime
+  DATA_ATUALIZACAO                                                 DateTime                       @default(dbgenerated("[dbo].[MyDate]()"), map: "DF_TBL_USUARIOS_HIERARQUIA_DATA_INCLUSAO1") @db.DateTime
+  SYS_USUARIOS_PADRAO                                              SYS_USUARIOS_PADRAO?
+  TBL_FV_REPRESENTANTES_ACESSO                                     TBL_FV_REPRESENTANTES_ACESSO?
+  TBL_FV_REPRESENTANTES_DEMANDA                                    TBL_FV_REPRESENTANTES_DEMANDA?
+  TBL_FV_REPRESENTANTES_VENDA                                      TBL_FV_REPRESENTANTES_VENDA?
+  TBL_USUARIOS_TBL_USUARIOS_HIERARQUIA_EMAILToTBL_USUARIOS         TBL_USUARIOS                   @relation("TBL_USUARIOS_HIERARQUIA_EMAILToTBL_USUARIOS", fields: [EMAIL], references: [EMAIL], onUpdate: NoAction, map: "FK_TBL_USUARIOS_HIERARQUIA_TBL_USUARIOS")
+  TBL_USUARIOS_TBL_USUARIOS_HIERARQUIA_EMAIL_GERENTEToTBL_USUARIOS TBL_USUARIOS                   @relation("TBL_USUARIOS_HIERARQUIA_EMAIL_GERENTEToTBL_USUARIOS", fields: [EMAIL_GERENTE], references: [EMAIL], onUpdate: NoAction, map: "FK_TBL_USUARIOS_HIERARQUIA_TBL_USUARIOS1")
+  TBL_USUARIOS_TBL_USUARIOS_HIERARQUIA_EMAIL_DIRETORToTBL_USUARIOS TBL_USUARIOS                   @relation("TBL_USUARIOS_HIERARQUIA_EMAIL_DIRETORToTBL_USUARIOS", fields: [EMAIL_DIRETOR], references: [EMAIL], onUpdate: NoAction, map: "FK_TBL_USUARIOS_HIERARQUIA_TBL_USUARIOS2")
+
+  @@index([EMAIL], map: "IX_TBL_USUARIOS_HIERARQUIA_EMAIL")
+  @@index([EMAIL_DIRETOR], map: "IX_TBL_USUARIOS_HIERARQUIA_EMAIL_DIRETOR")
+  @@index([EMAIL_GERENTE], map: "IX_TBL_USUARIOS_HIERARQUIA_EMAIL_GERENTE")
+}
+
+model TBL_USUARIOS_PERFIS {
+  COD_PERFIL   Decimal        @id(map: "PK_TBL_USUARIOS_PERFIS") @db.Decimal(18, 0)
+  PERFIL       String         @db.VarChar(100)
+  TBL_USUARIOS TBL_USUARIOS[]
+
+  @@index([COD_PERFIL], map: "IX_TBL_USUARIOS_PERFIS")
+}
