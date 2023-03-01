@@ -4,19 +4,16 @@ import { prisma } from '../../../../../db/prisma'
 import { IDemandaRepository } from '../../../repositories/IDemandaRepository'
 
 export class DemandaRepository implements IDemandaRepository {
-  async getDistribuidores(
-    year: string,
-    month: string,
-  ): Promise<
-    Prisma.PickArray<Prisma.TBL_MOVIMENTO_DEMANDAGroupByOutputType, []>
-  > {
-    const distribuidores = await prisma.tBL_MOVIMENTO_DEMANDA.groupBy({
-      by: ['CNPJ_DISTRIBUIDOR'],
-      where: {
-        ANO: year,
-        MES: month,
-      },
-    })
+  async getDistribuidores(year: string, month: string): Promise<[] | any> {
+    const distribuidores = await prisma.$queryRaw(
+      Prisma.sql`
+      select md.CNPJ_DISTRIBUIDOR, tbd.NOME_FANTASIA from TBL_MOVIMENTO_DEMANDA as md
+      join TBL_DISTRIBUIDORES tbd
+	        on tbd.CNPJ_DISTRIBUIDOR = md.CNPJ_DISTRIBUIDOR
+      where md.ANO = ${year} AND  md.MES =${month}
+      group by md.CNPJ_DISTRIBUIDOR, tbd.NOME_FANTASIA
+      `,
+    )
     return distribuidores
   }
 

@@ -1,5 +1,11 @@
 {
   "cSpell.words": [
     "Estabelecimentos"
+  ],
+  "appService.defaultWebAppToDeploy": "/subscriptions/45ab9953-9bd5-4ce6-90dc-2f7d1e896379/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/csladminback",
+  "appService.deploySubpath": ".",
+  "appService.zipIgnorePattern": [
+    "node_modules{,/**}",
+    ".vscode{,/**}"
   ]
 }

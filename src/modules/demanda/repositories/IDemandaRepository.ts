@@ -9,12 +9,8 @@ export interface IDemandaRepository {
   ): Promise<
     Prisma.PickArray<Prisma.TBL_MOVIMENTO_DEMANDAGroupByOutputType, []>
   >
-  getDistribuidores(
-    year: string,
-    month: string,
-  ): Promise<
-    Prisma.PickArray<Prisma.TBL_MOVIMENTO_DEMANDAGroupByOutputType, []>
-  >
+  getDistribuidores(year: string, month: string): Promise<[] | any>
+
   getDemanda(
     year: string,
     month: string,
