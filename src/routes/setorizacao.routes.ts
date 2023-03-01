@@ -1,5 +1,9 @@
 import { FastifyInstance } from 'fastify'
+import { EditEstabelecimentoSetorizacaoController } from '../modules/estabelecimentos/usecases/editEstabelecimentoSetorizacao/editEstabelecimentoSetorizacaoController'
 import { SetorizacaoRepository } from '../modules/setorizacao/infra/prisma/SetorizacaoRepository'
+
+const editEstabelecimentoSetorizacaoController =
+  new EditEstabelecimentoSetorizacaoController()
 
 export async function setorizacaoRoutes(app: FastifyInstance) {
   app.get('/emails', () => {
@@ -9,4 +13,5 @@ export async function setorizacaoRoutes(app: FastifyInstance) {
 
     return emails
   })
+  app.patch('/transferir', editEstabelecimentoSetorizacaoController.handle)
 }
