@@ -4,12 +4,12 @@ import { estabelecimentosRoutes } from './routes/estabelecimentos.routes'
 
 // eslint-disable-next-line import/first
 
-import { diGetAllEstabelecimentos } from './shared/container'
+import { diGetAllEstabelecimentos, diMunicipios } from './shared/container'
 import { demandaRoutes } from './routes/demanda.routes'
 import { z } from 'zod'
 import { setorizacaoRoutes } from './routes/setorizacao.routes'
-import { env } from './env'
 import cors from '@fastify/cors'
+import { municipiosRoutes } from './routes/municipios.routes'
 
 export const app = fastify()
 app.register(cors, {
@@ -19,9 +19,9 @@ app.register(fastifyAwilixPlugin, {
   disposeOnClose: true,
   disposeOnResponse: true,
 })
-console.log(env.NODE_ENV)
 
 app.addHook('onRequest', diGetAllEstabelecimentos)
+app.addHook('onRequest', diMunicipios)
 app.setErrorHandler((error: any, request, reply) => {
   const errParams = z.object({
     statusCode: z.number(),
@@ -37,3 +37,4 @@ app.get('/', () => {
 app.register(estabelecimentosRoutes, { prefix: '/estabelecimentos' })
 app.register(demandaRoutes, { prefix: '/demanda' })
 app.register(setorizacaoRoutes, { prefix: '/setorizacao' })
+app.register(municipiosRoutes, { prefix: '/municipios' })

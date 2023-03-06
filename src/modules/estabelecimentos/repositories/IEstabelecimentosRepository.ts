@@ -15,7 +15,7 @@ export interface ICreateEstabelecimentoDTO {
 
 interface IEstabelecimentoRepository {
   create(data: ICreateEstabelecimentoDTO): Promise<void>
-  createCPF(cpf: string, nome: string): Promise<void>
+  createCPF(cpf: string, nome: string, codMunicipio: string): Promise<void>
   findByCNPJ(cnpj: string): Promise<TBL_ESTABELECIMENTOS | null>
   getAll(value: any): Promise<TBL_ESTABELECIMENTOS[] | unknown>
   getSetorizacaoByEmail(email: string): Promise<any>

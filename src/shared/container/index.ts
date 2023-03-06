@@ -6,10 +6,19 @@ import { EditEstabelecimentoUsecase } from '../../modules/estabelecimentos/useca
 import { GetEstabelecimentoByCnpjUseCase } from '../../modules/estabelecimentos/usecases/getEstabelecimentoByCnpj/getEstabelecimentoByCnpjUseCase'
 import { CreateEstabelecimentoUsecase } from '../../modules/estabelecimentos/usecases/createEstabelecimento/createEstabelecimentoUsecase'
 import { CreateEstabelecimentoCPFUsecase } from '../../modules/estabelecimentos/usecases/createEstabelecimentoCPF/createEstabelecimentoCPFUsecase'
+import { MunicipioRepository } from '../../modules/municipios/infra/prisma/repository/MunicipioRepository'
+import { ListAllUFUsecase } from '../../modules/municipios/usecases/listAllUF/listAllUFUsecase'
+import { GetCitiesByUFUsecase } from '../../modules/municipios/usecases/getCititesbByUF/GetCitiesByUFUsecase'
 const { diContainer } = require('@fastify/awilix')
 
 diContainer.register({
   estabelecimentoRepository: asClass(EstabelecimentoRepository, {
+    lifetime: Lifetime.SINGLETON,
+    dispose: (module: any) => module.dispose(),
+  }),
+})
+diContainer.register({
+  municipioRepository: asClass(MunicipioRepository, {
     lifetime: Lifetime.SINGLETON,
     dispose: (module: any) => module.dispose(),
   }),
@@ -76,5 +85,34 @@ export function diGetAllEstabelecimentos(
     ),
   })
 
+  done()
+}
+export function diMunicipios(
+  request: FastifyRequest,
+  reply: FastifyReply,
+  done: DoneFuncWithErrOrRes,
+) {
+  request.diScope.register({
+    listAllUFUseCase: asFunction(
+      ({ municipioRepository }: any) => {
+        return new ListAllUFUsecase(municipioRepository)
+      },
+      {
+        lifetime: Lifetime.SCOPED,
+        dispose: (module: any) => module.dispose(),
+      },
+    ),
+  })
+  request.diScope.register({
+    getCitiesByUFUseCase: asFunction(
+      ({ municipioRepository }: any) => {
+        return new GetCitiesByUFUsecase(municipioRepository)
+      },
+      {
+        lifetime: Lifetime.SCOPED,
+        dispose: (module: any) => module.dispose(),
+      },
+    ),
+  })
   done()
 }

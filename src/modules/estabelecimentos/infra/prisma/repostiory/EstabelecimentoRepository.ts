@@ -42,7 +42,11 @@ export class EstabelecimentoRepository implements IEstabelecimentoRepository {
     })
   }
 
-  async createCPF(cpf: string, nome: string): Promise<void> {
+  async createCPF(
+    cpf: string,
+    nome: string,
+    codMunicipio: string,
+  ): Promise<void> {
     await prisma.tBL_ESTABELECIMENTOS.create({
       data: {
         CNPJ: cpf,
@@ -55,7 +59,7 @@ export class EstabelecimentoRepository implements IEstabelecimentoRepository {
         COMPLEMENTO: '',
         BAIRRO: '',
         CEP: '00000000',
-        COD_MUNICIPIO: '0000000',
+        COD_MUNICIPIO: codMunicipio,
         COD_NATUREZA: 1000,
         EMAIL_REPRESENTANTE_DEMANDA: 'orfao@orfao',
         TARGET_DEMANDA: false,

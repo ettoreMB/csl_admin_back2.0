@@ -6,11 +6,11 @@ class CreateEstabelecimentoCPFUsecase {
     this.estabelecimentoRepository = estabelecimentoRepository
   }
 
-  async execute(cnpj: string, name: string) {
-    const filteredCNPJ = cnpj.replace(/\D+/g, '')
+  async execute(cpf: string, name: string, codMunicipio: string) {
+    const filteredCPF = cpf.replace(/\D+/g, '')
 
     const estabelecimento = await this.estabelecimentoRepository.findByCNPJ(
-      filteredCNPJ,
+      filteredCPF,
     )
 
     if (estabelecimento) {
@@ -18,7 +18,11 @@ class CreateEstabelecimentoCPFUsecase {
     }
 
     try {
-      await this.estabelecimentoRepository.createCPF(filteredCNPJ, name)
+      await this.estabelecimentoRepository.createCPF(
+        filteredCPF,
+        name,
+        codMunicipio,
+      )
     } catch (error) {
       console.log(error)
       throw new AppError('Erro ao cadastrar no banco')
